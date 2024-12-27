@@ -1,0 +1,13 @@
+.divider {
+    height: 1px; /* 分隔線的高度 */
+    width: 100%; /* 分隔線的寬度 */
+    background-color: #ccc; /* 分隔線的顏色 */
+    margin: 20px 0; /* 上下邊距，根據需要調整 */
+}
+.bg-img{
+    border-radius: 0 0 15rem 15rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    @media (min-width: 768px) {
+      border-radius: 25rem 0 0 25rem;
+    }
+}
