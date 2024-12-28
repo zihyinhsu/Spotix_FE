@@ -187,19 +187,20 @@ function handleTranfer() {
 }
 
 const transforEmail = ref('')
-const isTransfer = ref(false)
-const isDetail = ref(false)
-const tempData = ref({})
+const modelType = ref('')
+// const isTransfer = ref(false)
+// const isDetail = ref(false)
+const tempData = ref()
 function openModel(type: string, event: object) {
   isShowModal.value = true
   tempData.value = event
   if (type === 'detail') {
     console.log('detail')
-    isDetail.value = true
+    modelType.value = 'detail'
   }
   else {
     console.log('transfer')
-    isTransfer.value = true
+    modelType.value = 'transfer'
   }
 }
 
@@ -502,11 +503,11 @@ const qrcode = useQRCode(text)
     >
       <template #header>
         <div class="flex items-center text-lg font-bold">
-          {{ isTransfer ? '轉讓票券' : '查看詳情' }}
+          {{ modelType ==='transfer' ? '轉讓票券' : '查看詳情' }}
         </div>
       </template>
       <template #body>
-        <template v-if="isTransfer">
+        <template v-if="modelType ==='transfer'">
           <fwb-input
             v-model="transforEmail"
             class="focus:border-secondary focus:ring-opacity-0"
@@ -547,7 +548,7 @@ const qrcode = useQRCode(text)
         </template>
       </template>
       <template
-        v-if="isTransfer"
+        v-if="modelType ==='transfer'"
         #footer
       >
         <div class="flex justify-between">

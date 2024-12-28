@@ -43,11 +43,11 @@ const breakpoints = {
         v-for="(slide, idx) in heroSectionImg"
         :key="idx"
       >
-        <div class="carousel__item">
+        <div class="carousel__item w-full">
           <img
             :src="slide.url"
             alt=""
-            class="h-full object-fit shadow-lg"
+            class="h-full w-full object-fit shadow-lg"
           >
         </div>
       </Slide>
