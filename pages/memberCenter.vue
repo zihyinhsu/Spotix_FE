@@ -7,20 +7,11 @@ function handleSendOrder() {
   console.log('send order')
 }
 
-const user = ref({
-  email: 'test@gmail.com',
-  name: 'test123',
-  gender: false,
-  birthday: '1996-08-05',
-  cellphone: '0982256547',
-  address: '三清路77號',
-  avatarUrl: 'https://i.namu.wiki/i/pQjJNXL4RNJrLGhvtquanpjtvqUK3iMsQT4GjgaE6aKciAZ88BxNp1RZ1Q0HTTei6msC1ii9q3zlaB2-YWeRaQ.webp',
-  lineUserId: 'asdf',
-})
+const userData = useUser()
 
-const genderRadio = ref(String(user.value.gender))
+const genderRadio = ref(String(userData.value.gender))
 watch(genderRadio, (value) => {
-  user.value.gender = value === 'true'
+  userData.value.gender = value === 'true'
 })
 
 const isEdit = ref(false)
@@ -59,13 +50,13 @@ function handleFileChange(event: Event) {
   if (input.files && input.files[0]) {
     const reader = new FileReader()
     reader.onload = (e) => {
-      user.value.avatarUrl = e.target?.result as string
+      userData.value.avatarUrl = e.target?.result as string
     }
     reader.readAsDataURL(input.files[0])
   }
 }
 
-const eventsData = ref(
+const eventsData = ref<eventType[]>(
   [
     {
       id: 1,
@@ -235,7 +226,7 @@ const qrcode = useQRCode(text)
               @mouseleave="isShowMask = false"
             >
               <img
-                :src="user.avatarUrl"
+                :src="userData.avatarUrl"
                 alt="cover"
                 class="w-full h-full object-cover"
               >
@@ -271,32 +262,32 @@ const qrcode = useQRCode(text)
             @submit.prevent="handleSendOrder"
           >
             <fwb-input
-              v-model="user.email"
+              v-model="userData.email"
               placeholder="請輸入電子郵件"
               label="Email"
               type="email"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="user.email && !validateEmailPattern.test(user.email) ? 'error' : undefined"
+              :validation-status="userData.email && !validateEmailPattern.test(userData.email) ? 'error' : undefined"
               required
             >
               <template
-                v-if="user.email && !validateEmailPattern.test(user.email)"
+                v-if="userData.email && !validateEmailPattern.test(userData.email)"
                 #validationMessage
               >
                 請輸入有效的電子郵件地址
               </template>
             </fwb-input>
             <fwb-input
-              v-model="user.name"
+              v-model="userData.name"
               placeholder="請輸入姓名"
               label="姓名"
               type="text"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="user.name && user.name?.length < 2 ? 'error' : undefined"
+              :validation-status="userData.name && userData.name?.length < 2 ? 'error' : undefined"
               required
             >
               <template
-                v-if="user.name && user.name?.length < 2"
+                v-if="userData.name && userData.name?.length < 2"
                 #validationMessage
               >
                 請輸入正確的姓名
@@ -323,7 +314,7 @@ const qrcode = useQRCode(text)
 
             <div>
               <fwb-input
-                v-model="user.birthday"
+                v-model="userData.birthday"
                 class="focus:border-secondary focus:ring-secondary"
                 type="date"
                 label="生日"
@@ -333,32 +324,32 @@ const qrcode = useQRCode(text)
             </div>
 
             <fwb-input
-              v-model="user.cellphone"
+              v-model="userData.cellphone"
               placeholder="請輸入手機"
               label="手機"
               type="tel"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="user.cellphone && !validateCellphonePattern.test(user.cellphone) ? 'error' : undefined"
+              :validation-status="userData.cellphone && !validateCellphonePattern.test(userData.cellphone) ? 'error' : undefined"
               required
             >
               <template
-                v-if="user.cellphone && !validateCellphonePattern.test(user.cellphone)"
+                v-if="userData.cellphone && !validateCellphonePattern.test(userData.cellphone)"
                 #validationMessage
               >
                 請輸入正確的手機號碼
               </template>
             </fwb-input>
             <fwb-input
-              v-model="user.address"
+              v-model="userData.address"
               placeholder="請輸入地址"
               label="地址"
               type="text"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="user.address && !user.address?.length ? 'error' : undefined"
+              :validation-status="userData.address && !userData.address?.length ? 'error' : undefined"
               required
             >
               <template
-                v-if="user.address && !user.address?.length"
+                v-if="userData.address && !userData.address?.length"
                 #validationMessage
               >
                 請輸入地址
@@ -392,9 +383,9 @@ const qrcode = useQRCode(text)
                   {{ config.label }}
                 </div>
                 <div class="py-2">
-                  <span v-if="config.value === 'birthday'">{{ user.birthday }}</span>
-                  <span v-else-if="config.value ==='gender'">{{ user[config.value] ?'女':'男' }}</span>
-                  <span v-else-if="config.value !== 'avatarUrl'"> {{ user[config.value] }}</span>
+                  <span v-if="config.value === 'birthday'">{{ userData.birthday }}</span>
+                  <span v-else-if="config.value ==='gender'">{{ userData[config.value] ?'女':'男' }}</span>
+                  <span v-else-if="config.value !== 'avatarUrl'"> {{ userData[config.value] }}</span>
                 </div>
               </div>
               <div class="border-b border-gray-300" />
@@ -415,15 +406,15 @@ const qrcode = useQRCode(text)
                 class="flex items-center space-x-2"
               >
                 <img
-                  src="../assets/img/LINE_logo.png"
+                  src="/images/line.png"
                   class="w-[30px] h-[30px]"
                   alt="line"
                 >
                 <div class="text-sm font-bold">
                   <span
-                    :class=" { 'text-primary': user.lineUserId.length == 0 }"
+                    :class=" { 'text-primary': userData.lineUserId.length == 0 }"
                   >
-                    {{ user.lineUserId.length ? '已連結':'尚未連結' }}  Line
+                    {{ userData.lineUserId.length ? '已連結':'尚未連結' }}  Line
                   </span>
                   ，請務必加入官方帳號
                 </div>

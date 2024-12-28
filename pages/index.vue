@@ -24,73 +24,117 @@ function chooseYear(type: string) {
   }
 }
 
-const events = ref(
+const eventsData = ref<eventType[]>(
   [
     {
       id: 1,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
-      url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      name: 'DAY6 3RD WORLD TOUR ＜FOREVER YOUNG＞ in KAOHSIUNG',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2025-01-19 18:00',
+      url: 'https://static.tixcraft.com/images/activity/25_day6_70552ba96e820fbd83666c05d1b73da8.jpg',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 2,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 3,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 4,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 5,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 6,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 7,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 8,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 9,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 10,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
     {
       id: 11,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
-      date: 'Thu Apr 24 2025 00:00:00 GMT+0000',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
+      orderNumber: '141777450',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      location: '台北小巨蛋',
+      price: 5000,
     },
   ],
 )
@@ -136,6 +180,15 @@ const sortType = ref([
 function getEventsBySort(sort: string) {
   activeSort.value = sort
 }
+
+onMounted(() => {
+  const bodyElement = document?.querySelector('body')
+  bodyElement?.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  })
+})
 </script>
 
 <template>
@@ -149,7 +202,7 @@ function getEventsBySort(sort: string) {
         >
           <div
             class="flex items-center"
-            :class="year === currentYear - 1 ? 'pointer-events-none' : 'cursor-pointer'"
+            :class="year === currentYear - 1 ? 'pointer-eventsData-none' : 'cursor-pointer'"
             @click="chooseYear('prev')"
           >
             <Icon
@@ -165,7 +218,7 @@ function getEventsBySort(sort: string) {
           <span class="font-bold text-xl md:text-4xl font-mono text-center"> {{ year }} Event Schedule</span>
           <div
             class="flex items-center"
-            :class="year === currentYear + 2 ? 'pointer-events-none' : 'cursor-pointer'"
+            :class="year === currentYear + 2 ? 'pointer-eventsData-none' : 'cursor-pointer'"
             @click="chooseYear('next')"
           >
             <span class="md:text-2xl font-mono"> {{ year + 1 }}</span>
@@ -222,11 +275,14 @@ function getEventsBySort(sort: string) {
     <section class="container">
       <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8 my-10">
         <NuxtLink
-          v-for="event in events"
+          v-for="event in eventsData"
           :key="event.id"
           :to="'/events/' + event.id"
+          class="h-full"
         >
-          <EventCard :event="event" />
+          <EventCard
+            :event="event"
+          />
         </NuxtLink>
       </div>
     </section>

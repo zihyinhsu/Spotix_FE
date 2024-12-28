@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { navigateTo } from '#app'
-import { handleSearch } from '~/utils/commonFunc'
+// import { handleSearch } from '~/utils/commonFunc'
 
 // const supabase = useSupabaseClient()
-// const user = useSupabaseUser()
+// const userData = useSupabaseUser()
 // const notify = useNotify()
 const search = useSearch()
 // const { cartData } = useCartData()
@@ -30,19 +29,8 @@ async function handleSignOut() {
 }
 
 const route = useRoute()
-// watch(() => route.path, () => {
-//   if (!route.path.includes('/search')) search.value.text = ''
-// })
-// watch(() => route.query.filter, (newVal) => {
-//   search.value.text = newVal as string
-// }, {
-//   immediate: true,
-// })
-const user = ref({
-  name: 'test123',
-  email: 'test@gmail.com',
-  avatarUrl: 'https://i.namu.wiki/i/pQjJNXL4RNJrLGhvtquanpjtvqUK3iMsQT4GjgaE6aKciAZ88BxNp1RZ1Q0HTTei6msC1ii9q3zlaB2-YWeRaQ.webp',
-})
+
+const userData = useUser()
 
 onMounted(() => {
   const bodyElement = document?.querySelector('body')
@@ -113,7 +101,7 @@ onMounted(() => {
           </section>
           <section class="flex space-x-4">
             <NuxtLink
-              v-if="!user"
+              v-if="!userData"
               to="/login"
               class="cursor-pointer"
             >
@@ -124,7 +112,7 @@ onMounted(() => {
               </fwb-button>
             </NuxtLink>
             <NuxtLink
-              v-if="user"
+              v-if="userData"
               to="/memberCenter?type=profile"
               class="desktop-only cursor-pointer"
               @click="showDropdown = false"
@@ -136,7 +124,7 @@ onMounted(() => {
               </fwb-button>
             </NuxtLink>
             <NuxtLink
-              v-if="user"
+              v-if="userData"
               to="/memberCenter?type=orderManagement"
               class="desktop-only cursor-pointer"
               @click="showDropdown = false"
@@ -147,7 +135,7 @@ onMounted(() => {
             </NuxtLink>
 
             <div
-              v-if="user"
+              v-if="userData"
               class="relative cursor-pointer"
             >
               <span
@@ -156,7 +144,7 @@ onMounted(() => {
               >
                 <div class="rounded-full w-[45px] h-[45px] overflow-hidden">
                   <img
-                    :src="user.avatarUrl"
+                    :src="userData.avatarUrl"
                     alt="cover"
                     class="w-[45px] object-cover"
                   >
@@ -176,9 +164,9 @@ onMounted(() => {
               >
                 <fwb-list-group-item class="">
                   <div class="flex flex-col justify-start items-start">
-                    <span>{{ user.name }}</span>
+                    <span>{{ userData.name }}</span>
                     <span class="text-[12px] text-gray-500">
-                      {{ user.email }}
+                      {{ userData.email }}
                     </span>
                   </div>
                 </fwb-list-group-item>
@@ -303,7 +291,7 @@ onMounted(() => {
         target="_blank"
       >
         <img
-          src="../assets/img/LINE_logo.png"
+          src="/images/line.png"
           class="w-[60px] object-cover"
           alt="line"
         >
