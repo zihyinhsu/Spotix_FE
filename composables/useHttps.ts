@@ -71,10 +71,11 @@ function fetch<T>(url: UrlType, opts: HttpOption<T>) {
       // Set the request headers
       // const { $i18n } = useNuxtApp()
       // const locale = $i18n.locale.value
-      options.headers = {
-        'Content-Type': 'application/json',
-      }
-      options.headers = new Headers(options.headers)
+      // options.headers = {
+      //   'Content-Type': 'application/json',
+      // }
+      options.headers = new Headers()
+      options.headers.set('Content-Type', 'application/json')
       // options.headers.set('Content-Language', locale)
     },
     // Response interception

@@ -156,7 +156,7 @@ async function handleGoogleLogin() {
     </div>
     <div class="col-span-12 md:col-span-6 order-1 md:order-2 mb-10 md:mb-0">
       <img
-        src="../assets/img/login.jpg"
+        src="/images/login.jpg"
         alt="spotix"
         class="object-cover md:h-screen bg-img"
       >

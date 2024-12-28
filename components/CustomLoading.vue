@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const nuxtApp = useNuxtApp()
 const isLoading = useLoading()
 nuxtApp.hook('page:start', () => {

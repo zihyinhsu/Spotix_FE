@@ -105,15 +105,15 @@ async function handleGoogleRegister() {
           @submit.prevent="handleSignUp"
         >
           <fwb-input
-            v-model="userData.userName"
+            v-model="userData.name"
             placeholder="請輸入姓名"
             label="姓名"
             class="focus:border-secondary focus:ring-secondary"
-            :validation-status="userData.userName && userData.userName.length < 2 ? 'error' : undefined"
+            :validation-status="userData.name && userData.name.length < 2 ? 'error' : undefined"
             required
           >
             <template
-              v-if="userData.userName && userData.userName.length < 2"
+              v-if="userData.name && userData.name.length < 2"
               #validationMessage
             >
               請輸入正確的姓名
@@ -173,7 +173,7 @@ async function handleGoogleRegister() {
     </div>
     <div class="col-span-12 md:col-span-6 order-1 md:order-2 mb-10 md:mb-0">
       <img
-        src="../assets/img/register.jpg"
+        src="/images/register.jpg"
         alt="spotix"
         class="object-cover md:h-screen bg-img"
       >

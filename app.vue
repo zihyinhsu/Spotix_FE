@@ -51,12 +51,6 @@ useHead({
 
 <template>
   <NuxtLayout>
-    <!-- <img
-      v-if="cursorVisible"
-      class="hidden md:block myCursor"
-      src="/images/cursor.png"
-      :style="{ left: cursorPosition.x + 'px', top: cursorPosition.y + 'px' }"
-    > -->
     <fwb-toast
       v-if="notify.visible"
       divide
@@ -77,11 +71,4 @@ body {
   /* cursor: none; */
   overflow-x: hidden;
 }
-/* .myCursor {
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  pointer-events: none;
-  z-index: 30;
-} */
 </style>
