@@ -227,11 +227,7 @@ const qrcode = useQRCode(text)
         :title="tab.label"
       >
         <template v-if="tab.value === 'profile'">
-          <form
-            v-if="isEdit"
-            class="flex flex-col space-y-4 mb-4"
-            @submit.prevent="handleSendOrder"
-          >
+          <div class="flex items-end justify-between mb-6">
             <div
               class="relative rounded-full w-[150px] h-[150px] overflow-hidden"
               @mouseenter="isShowMask = true"
@@ -259,7 +255,20 @@ const qrcode = useQRCode(text)
                 >
               </div>
             </div>
+            <fwb-button
+              v-if="!isEdit"
+              class=" bg-primary hover:bg-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
+              @click="isEdit=true"
+            >
+              修改資料
+            </fwb-button>
+          </div>
 
+          <form
+            v-if="isEdit"
+            class="flex flex-col space-y-4 mb-4"
+            @submit.prevent="handleSendOrder"
+          >
             <fwb-input
               v-model="user.email"
               placeholder="請輸入電子郵件"
@@ -372,26 +381,6 @@ const qrcode = useQRCode(text)
           </form>
 
           <section v-else>
-            <div class="flex justify-between items-end mb-6">
-              <div
-                class="rounded-full w-[150px] h-[150px] overflow-hidden"
-              >
-                <img
-                  :src="user.avatarUrl"
-                  alt="avatar"
-                  class="w-full h-full object-cover"
-                >
-              </div>
-              <div>
-                <fwb-button
-                  class=" bg-primary hover:bg-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
-                  @click="isEdit=true"
-                >
-                  修改資料
-                </fwb-button>
-              </div>
-            </div>
-
             <div
               v-for="config in table"
               :key="config.value"
