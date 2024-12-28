@@ -110,7 +110,7 @@ onMounted(() => {
   // 初始滾動位置
   if (scrollContainer.value) {
     const index = Months.indexOf(activedMonth.value)
-    const scrollAmount = index * 50// 根據需要調整滾動量
+    const scrollAmount = index * 60// 根據需要調整滾動量
     scrollContainer.value.scrollTo({
       left: scrollAmount,
       behavior: 'smooth',
@@ -209,7 +209,7 @@ function getEventsBySort(sort: string) {
           <div
             v-for="sort in sortType"
             :key="sort.value"
-            class="px-6 py-4 cursor-pointer transition-ease font-bold"
+            class="text-center px-6 py-4 cursor-pointer transition-ease font-bold"
             :class="activeSort === sort.value?'bg-primary text-white': 'bg-white text-secondary' "
             @click="getEventsBySort(sort.value)"
           >

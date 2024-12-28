@@ -1,27 +1,7 @@
 <script setup lang="ts">
-const route = useRoute()
+import { useQRCode } from '@vueuse/integrations/useQRCode'
 
-const tabs = ref([
-  {
-    label: '會員資料',
-    value: 'profile',
-  },
-  {
-    label: '我的票券',
-    value: 'tickets',
-  },
-  {
-    label: '訂單管理',
-    value: 'orderManagement',
-  },
-])
-const activeTab = ref('profile')
-watch(() => route.query.type, () => {
-  activeTab.value = String(route.query.type)
-},
-{
-  immediate: true,
-})
+const route = useRoute()
 
 function handleSendOrder() {
   console.log('send order')
@@ -84,28 +64,24 @@ function handleFileChange(event: Event) {
     reader.readAsDataURL(input.files[0])
   }
 }
-const router = useRouter()
-function handlePaneClick(activeTab: string) {
-  router.push({ query: { ...route.query, type: activeTab } })
-}
 
-const orderEvents = ref(
+const eventsData = ref(
   [
     {
       id: 1,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
       orderNumber: '141777450',
-      count: 5,
-      date: '2025-08-24',
+      seat: 'A區 5排 1號',
+      date: '2024-12-27',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
     },
     {
       id: 2,
-      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
+      name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(2)',
       orderNumber: '141777450',
-      count: 5,
+      seat: 'A區 5排 2號',
       date: '2025-08-24',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
@@ -115,7 +91,7 @@ const orderEvents = ref(
       id: 3,
       name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
       orderNumber: '141777450',
-      count: 5,
+      seat: 'A區 5排 3號',
       date: '2025-08-24',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
@@ -125,13 +101,17 @@ const orderEvents = ref(
       id: 4,
       name: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025',
       orderNumber: '141777450',
-      count: 5,
+      seat: 'A區 5排 4號',
       date: '2025-08-24',
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
     },
   ])
+
+const validEvents = computed(() => {
+  return eventsData.value.filter(event => event.date >= new Date().toISOString().split('T')[0])
+})
 
 const tableConfig = ref([
   {
@@ -147,8 +127,8 @@ const tableConfig = ref([
     value: 'name',
   },
   {
-    label: '數量',
-    value: 'count',
+    label: '座位',
+    value: 'seat',
   },
   {
     label: '地點',
@@ -159,7 +139,37 @@ const tableConfig = ref([
     value: 'price',
   },
 ])
+const router = useRouter()
 
+//  tab
+const tabs = ref([
+  {
+    label: '會員資料',
+    value: 'profile',
+  },
+  {
+    label: '我的票券',
+    value: 'tickets',
+  },
+  {
+    label: '接收票券',
+    value: 'receivedTickets',
+  },
+  {
+    label: '訂單管理',
+    value: 'orderManagement',
+  },
+])
+const activeTab = ref('profile')
+watch(() => route.query.type, () => {
+  activeTab.value = String(route.query.type)
+},
+{
+  immediate: true,
+})
+function handlePaneClick(activeTab: string) {
+  router.push({ query: { ...route.query, type: activeTab } })
+}
 onMounted(() => {
   const bodyElement = document?.querySelector('body')
   bodyElement?.scrollTo({
@@ -168,6 +178,34 @@ onMounted(() => {
     behavior: 'smooth',
   })
 })
+
+// Model
+const isShowModal = ref(false)
+function handleTranfer() {
+  console.log('handleTranfer')
+  isShowModal.value = false
+}
+
+const transforEmail = ref('')
+const isTransfer = ref(false)
+const isDetail = ref(false)
+const tempData = ref({})
+function openModel(type: string, event: object) {
+  isShowModal.value = true
+  tempData.value = event
+  if (type === 'detail') {
+    console.log('detail')
+    isDetail.value = true
+  }
+  else {
+    console.log('transfer')
+    isTransfer.value = true
+  }
+}
+
+// QRCode
+const text = ref('text-to-encode')
+const qrcode = useQRCode(text)
 </script>
 
 <template>
@@ -403,10 +441,10 @@ onMounted(() => {
             </section>
           </section>
         </template>
-        <template v-else-if="tab.value === 'tickets'">
+        <template v-else-if="tab.value === 'tickets'|| tab.value === 'orderManagement'">
           <div class="flex flex-col space-y-8">
             <div
-              v-for="event in orderEvents"
+              v-for="event in (activeTab === 'tickets' ? validEvents : eventsData)"
               :key="event.id"
               class="grid grid-cols-12 gap-4 md:gap-0 shadow-lg"
             >
@@ -442,14 +480,17 @@ onMounted(() => {
                     size="sm"
                     outline
                     class="md:w-full border-primary text-primary hover:bg-primary focus:ring-opacity-0 hover:text-white"
+                    @click="openModel('detail', event)"
                   >
-                    退票
+                    查看詳情
                   </fwb-button>
 
                   <fwb-button
+                    v-if="event.date >= new Date().toISOString().split('T')[0]"
                     size="sm"
                     outline
                     class="md:w-full border-primary text-primary hover:bg-primary focus:ring-opacity-0 hover:text-white"
+                    @click="openModel('transfer', event)"
                   >
                     轉讓票券
                   </fwb-button>
@@ -458,13 +499,85 @@ onMounted(() => {
             </div>
           </div>
         </template>
-        <template v-else-if="tab.value === 'orderManagement'">
+        <template v-else-if="tab.value === 'receivedTickets'">
           <div>
-            orderManagement
+            receivedTickets
           </div>
         </template>
       </fwb-tab>
     </fwb-tabs>
+    <fwb-modal
+      v-if="isShowModal"
+      class="modal"
+      @close="isShowModal = false"
+    >
+      <template #header>
+        <div class="flex items-center text-lg font-bold">
+          {{ isTransfer ? '轉讓票券' : '查看詳情' }}
+        </div>
+      </template>
+      <template #body>
+        <template v-if="isTransfer">
+          <fwb-input
+            v-model="transforEmail"
+            class="focus:border-secondary focus:ring-opacity-0"
+            placeholder="請輸入接收方的 帳號(Email)"
+            label="Email"
+          />
+          <span class="font-bold text-primary text-sm">* 票券一經送出，除非未被接收否則無法自行取消轉讓*</span>
+        </template>
+        <template v-else>
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="space-y-2">
+              <div
+                v-for="config in tableConfig"
+                :key="config.value"
+              >
+                <div class="grid grid-cols-12">
+                  <div class="col-span-4 md:col-span-3 font-bold">
+                    {{ config.label }}
+                  </div>
+                  <div class="col-span-8 md:col-span-9 md:min-w-auto">
+                    <span
+                      v-if="config.value=='price'"
+                      class="font-bold"
+                    > $ {{ tempData[config.value] }}</span>
+                    <span v-else> {{ tempData[config.value] }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="divider mobile-only"
+            />
+            <img
+              :src="qrcode"
+              alt="QR Code"
+            >
+          </div>
+        </template>
+      </template>
+      <template
+        v-if="isTransfer"
+        #footer
+      >
+        <div class="flex justify-between">
+          <fwb-button
+            color="alternative"
+            class="border-primary text-primary hover:bg-primary hover:text-white focus:ring-opacity-0"
+            @click="isShowModal = false"
+          >
+            取消
+          </fwb-button>
+          <fwb-button
+            class="bg-primary text-white hover:bg-primary focus:ring-opacity-0"
+            @click="handleTranfer"
+          >
+            確認送出
+          </fwb-button>
+        </div>
+      </template>
+    </fwb-modal>
   </div>
 </template>
 
@@ -480,5 +593,8 @@ onMounted(() => {
   &:focus{
   box-shadow: 0 0 0 1px theme('colors.primary');
   }
+}
+:deep(.modal > div > .h-full) {
+  height: auto !important;
 }
 </style>

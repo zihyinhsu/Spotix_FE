@@ -14,6 +14,7 @@ declare module 'vue' {
     FwbInput: typeof import('flowbite-vue')['FwbInput']
     FwbListGroup: typeof import('flowbite-vue')['FwbListGroup']
     FwbListGroupItem: typeof import('flowbite-vue')['FwbListGroupItem']
+    FwbModal: typeof import('flowbite-vue')['FwbModal']
     FwbNavbarLogo: typeof import('flowbite-vue')['FwbNavbarLogo']
     FwbPagination: typeof import('flowbite-vue')['FwbPagination']
     FwbRadio: typeof import('flowbite-vue')['FwbRadio']

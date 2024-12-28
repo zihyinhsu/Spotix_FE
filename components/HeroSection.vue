@@ -61,7 +61,7 @@ const breakpoints = {
     <section class="py-6 md:py-14">
       <h1 class="text-gray-600 text-xl md:text-4xl text-extrabold tracking-wider font-mono text-center">
         <VueTypedJs
-          :strings="['體驗 每一場值得記住的<span style=\'color: #AE0000\'>瞬間</span>', '體驗 每一刻心之所向的<span style=\'color: #AE0000\'>悸動</span>']"
+          :strings="['體驗 每一場值得記住的<span class=\'font-bold\' style=\'color: #AE0000\'>瞬間</span>', '體驗 每一刻心之所向的<span class=\'font-bold\' style=\'color: #AE0000\'>悸動</span>']"
           :type-speed="100"
           :back-speed="80"
           :auto-insert-css="true"

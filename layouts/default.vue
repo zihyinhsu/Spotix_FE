@@ -313,23 +313,6 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.mobile-only {
-  display: none;
-}
-
-.desktop-only {
-  display: block;
-}
-
-/* 小於或等於 768px 寬的裝置視為手機 */
-@media (max-width: 768px) {
-  .mobile-only {
-    display: block;
-  }
-  .desktop-only {
-    display: none;
-  }
-}
 .sticky-top {
   position: sticky;
   top: 0;
