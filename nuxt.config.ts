@@ -29,15 +29,14 @@ export default defineNuxtConfig({
     plugins: [
       Components({
         resolvers: [
-          (componentName: string) => {
+          (componentName) => {
             if (componentName.startsWith('Fwb')) {
               return { name: componentName, from: 'flowbite-vue' }
             }
             return null
           },
         ],
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      }) as any,
+      }),
     ],
   },
   eslint: {
@@ -47,6 +46,7 @@ export default defineNuxtConfig({
         semi: false,
         quotes: 'single',
       },
+
       // standalone: false
     },
     checker: true,

@@ -67,6 +67,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 2,
@@ -77,6 +78,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 3,
@@ -87,6 +89,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 4,
@@ -97,6 +100,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
   ])
 
@@ -143,10 +147,6 @@ const tabs = ref([
     value: 'tickets',
   },
   {
-    label: '接收票券',
-    value: 'receivedTickets',
-  },
-  {
     label: '訂單管理',
     value: 'orderManagement',
   },
@@ -161,14 +161,6 @@ watch(() => route.query.type, () => {
 function handlePaneClick(activeTab: string) {
   router.push({ query: { ...route.query, type: activeTab } })
 }
-onMounted(() => {
-  const bodyElement = document?.querySelector('body')
-  bodyElement?.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth',
-  })
-})
 
 // Model
 const isShowModal = ref(false)
@@ -179,8 +171,7 @@ function handleTranfer() {
 
 const transforEmail = ref('')
 const modelType = ref('')
-// const isTransfer = ref(false)
-// const isDetail = ref(false)
+
 const tempData = ref()
 function openModel(type: string, event: object) {
   isShowModal.value = true
@@ -249,7 +240,7 @@ const qrcode = useQRCode(text)
             </div>
             <fwb-button
               v-if="!isEdit"
-              class=" bg-primary hover:bg-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
+              class="bg-primary hover:bg-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
               @click="isEdit=true"
             >
               修改資料
@@ -423,6 +414,51 @@ const qrcode = useQRCode(text)
           </section>
         </template>
         <template v-else-if="tab.value === 'tickets'|| tab.value === 'orderManagement'">
+          <template v-if="tab.value === 'tickets'">
+            <fwb-alert
+              type="success"
+              class="mb-4"
+            >
+              <template #icon>
+                <Icon
+                  name="line-md:bell-twotone-loop"
+                  size="24"
+                />
+              </template>
+              <template #title>
+                <h3 class="text-lg font-medium ml-2">
+                  接收票券
+                </h3>
+              </template>
+              <template #default="{ onCloseClick }">
+                <div class="mt-2 mb-4 text-sm">
+                  <div class="mb-2">
+                    您是否要接收好友 『徐姿茵』（jenny010328@gmail.com） 所轉讓的票券呢？
+                  </div>
+                  <div class="divider" />
+                  <div>活動名稱：DAY6 3RD WORLD TOUR ＜FOREVER YOUNG＞ in KAOHSIUNG</div>
+                  <div>日期 : 2025-01-19 18:00</div>
+                  <div>座位 : A區 5排 1號</div>
+                  <div>票價 : 5000</div>
+                </div>
+                <div class="flex space-x-4">
+                  <fwb-button
+                    class="bg-primary hover:bg-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
+                    @click="onCloseClick"
+                  >
+                    接收票券
+                  </fwb-button>
+                  <fwb-button
+                    size="sm"
+                    outline
+                    class="border-primary text-primary hover:bg-transperant focus:ring-opacity-0 hover:text-primary"
+                  >
+                    拒絕
+                  </fwb-button>
+                </div>
+              </template>
+            </fwb-alert>
+          </template>
           <div class="flex flex-col space-y-8">
             <div
               v-for="event in (activeTab === 'tickets' ? validEvents : eventsData)"
@@ -478,11 +514,6 @@ const qrcode = useQRCode(text)
                 </div>
               </div>
             </div>
-          </div>
-        </template>
-        <template v-else-if="tab.value === 'receivedTickets'">
-          <div>
-            receivedTickets
           </div>
         </template>
       </fwb-tab>

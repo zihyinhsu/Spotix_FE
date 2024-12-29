@@ -1,20 +1,4 @@
 <script setup lang="ts">
-// mouse event
-// const cursorVisible = ref(false)
-// const cursorPosition = ref({
-//   x: -50,
-//   y: -50,
-// })
-// onMounted(() => {
-//   cursorVisible.value = true
-// })
-// function updateCursorPosition(e: MouseEvent) {
-//   cursorPosition.value = {
-//     x: e.pageX,
-//     y: e.pageY,
-//   }
-// }
-
 const notify = useNotify()
 watch(() => notify.value.visible, (newVal) => {
   if (newVal) {
@@ -24,11 +8,6 @@ watch(() => notify.value.visible, (newVal) => {
   }
 })
 
-// const { categoriesData, getCategories } = useBooksData()
-// const cateResult = await getCategories()
-// if (cateResult?.value?.data) categoriesData.value = cateResult?.value?.data
-
-// const { getCart } = useCartData()
 // const user = useSupabaseUser()
 // onMounted(async () => {
 //   if (user.value) {

@@ -16,6 +16,13 @@ const nuxtApp = useNuxtApp()
 const isLoading = useLoading()
 nuxtApp.hook('page:start', () => {
   isLoading.value = true
+
+  const bodyElement = document?.querySelector('body')
+  bodyElement?.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  })
 })
 
 nuxtApp.hook('page:finish', () => {

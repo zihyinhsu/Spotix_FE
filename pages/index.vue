@@ -35,6 +35,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_day6_70552ba96e820fbd83666c05d1b73da8.jpg',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'DAY6 3RD WORLD TOUR ＜FOREVER YOUNG＞ in KAOHSIUNG',
     },
     {
       id: 2,
@@ -45,6 +46,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 3,
@@ -55,6 +57,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 4,
@@ -65,6 +68,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 5,
@@ -75,6 +79,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 6,
@@ -85,6 +90,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 7,
@@ -95,6 +101,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 8,
@@ -105,6 +112,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 9,
@@ -115,6 +123,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 10,
@@ -125,6 +134,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
     {
       id: 11,
@@ -135,6 +145,7 @@ const eventsData = ref<eventType[]>(
       url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
       location: '台北小巨蛋',
       price: 5000,
+      description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
     },
   ],
 )
@@ -180,15 +191,6 @@ const sortType = ref([
 function getEventsBySort(sort: string) {
   activeSort.value = sort
 }
-
-onMounted(() => {
-  const bodyElement = document?.querySelector('body')
-  bodyElement?.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth',
-  })
-})
 </script>
 
 <template>

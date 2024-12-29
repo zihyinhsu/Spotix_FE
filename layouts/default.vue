@@ -31,15 +31,6 @@ async function handleSignOut() {
 const route = useRoute()
 
 const userData = useUser()
-
-onMounted(() => {
-  const bodyElement = document?.querySelector('body')
-  bodyElement?.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth',
-  })
-})
 </script>
 
 <template>

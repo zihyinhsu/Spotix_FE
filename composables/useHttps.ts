@@ -92,16 +92,16 @@ function fetch<T>(url: UrlType, opts: HttpOption<T>) {
             message: data.message,
           }
         isLoading.value = true
-        if (method === 'GET') {
-          setTimeout(() => {
-            const bodyElement = document?.querySelector('body')
-            bodyElement?.scrollTo({
-              top: 0,
-              left: 0,
-              behavior: 'smooth',
-            })
-          }, 1000)
-        }
+        // if (method === 'GET') {
+        //   setTimeout(() => {
+        //     const bodyElement = document?.querySelector('body')
+        //     bodyElement?.scrollTo({
+        //       top: 0,
+        //       left: 0,
+        //       behavior: 'smooth',
+        //     })
+        //   }, 1000)
+        // }
       })
     },
     // Error interception
