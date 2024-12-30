@@ -15,12 +15,12 @@ function chooseYear(type: string) {
   activedMonth.value = 'JAN'
 
   if (type === 'next') {
-    year.value++
     if (year.value === currentYear + 2) return
+    year.value++
   }
   else {
-    year.value--
     if (year.value === currentYear - 1) return
+    year.value--
   }
 }
 

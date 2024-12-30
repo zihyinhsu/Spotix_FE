@@ -60,12 +60,16 @@ const activeTab = ref('info')
         <fwb-breadcrumb-item
           home
           href="/"
-          class="min-w-[60px]"
+          class="w-[70px] md:w-auto"
         >
-          首頁
+          <span class="text-xs md:text-sm">
+            首頁
+          </span>
         </fwb-breadcrumb-item>
         <fwb-breadcrumb-item class="text-primary">
-          {{ eventData.name }}
+          <span class="text-xs md:text-sm">
+            {{ eventData.name }}
+          </span>
         </fwb-breadcrumb-item>
       </fwb-breadcrumb>
     </div>
@@ -163,6 +167,7 @@ const activeTab = ref('info')
 
       <fwb-tabs
         v-model="activeTab"
+        variant="underline"
       >
         <fwb-tab
           name="info"

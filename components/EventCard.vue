@@ -10,7 +10,7 @@ const formattedDate = useDateFormat(props.event.date, 'YYYY-MM-DD HH:mm')
 <template>
   <div class="w-full h-full rounded-md overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-ease cursor-pointer hover-primary flex flex-col">
     <img
-      class="object-fit w-full h-[150px] md:h-[100px]"
+      class="object-fit w-full min-h-[160px] md:min-h-[80px]"
       :src="props.event.url"
       alt="event"
     >
