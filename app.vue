@@ -19,10 +19,10 @@ watch(() => notify.value.visible, (newVal) => {
 useHead({
   meta: [
     { name: 'title', content: 'Spotix' },
-    { name: 'description', content: '為各項藝文活動服務的售票系統。' },
+    { name: 'description', content: '為各項藝文活動服務的售票系統。 ' },
     { name: 'keywords', content: 'bookstore,second-hand' },
     { property: 'og:title', content: 'Spotix' },
-    { property: 'og:description', content: '為各項藝文活動服務的售票系統。' },
+    { property: 'og:description', content: '為各項藝文活動服務的售票系統。 ' },
     { property: 'og:image', content: '/images/logo.png' },
   ],
 })

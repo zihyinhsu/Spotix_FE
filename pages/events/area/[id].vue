@@ -529,7 +529,7 @@ const user = ref({
             <div class="flex justify-center items-center space-x-4">
               <VueClientRecaptcha
                 :value="CaptchaInputValue"
-                class="h-[60px] w-[200px]"
+                class="h-[50px] md:h-[60px] w-[150px] md:w-[200px]"
                 @get-code="getCaptchaCode"
                 @is-valid="checkValidCaptcha"
               />
