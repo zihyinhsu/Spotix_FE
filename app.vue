@@ -18,11 +18,11 @@ watch(() => notify.value.visible, (newVal) => {
 
 useHead({
   meta: [
-    { name: 'title', content: '徙閱二手書' },
-    { name: 'description', content: '從流浪的書頁，重拾閱讀的況味。' },
+    { name: 'title', content: 'Spotix' },
+    { name: 'description', content: '為各項藝文活動服務的售票系統。' },
     { name: 'keywords', content: 'bookstore,second-hand' },
-    { property: 'og:title', content: '徙閱二手書' },
-    { property: 'og:description', content: '從流浪的書頁，重拾閱讀的況味。' },
+    { property: 'og:title', content: 'Spotix' },
+    { property: 'og:description', content: '為各項藝文活動服務的售票系統。' },
     { property: 'og:image', content: '/images/logo.png' },
   ],
 })
