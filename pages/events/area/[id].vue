@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import VueClientRecaptcha from 'vue-client-recaptcha'
+
 const eventData = ref<eventType>({
   id: 1,
   name: 'DAY6 3RD WORLD TOUR ＜FOREVER YOUNG＞ in KAOHSIUNG',
@@ -35,13 +37,15 @@ const purchaseStep = ref([
 ])
 
 const activeStep = ref('chooseArea')
-
+watch(activeStep, () => {
+  scrollToTop()
+})
 const sessionOptions = [
   { name: '2025/01/18 (六)  18:00 < 高雄流行音樂中心 > DAY6 3RD WORLD TOUR ＜FOREVER YOUNG＞ in KAOHSIUNG', value: '1', date: '2025/01/18 18:00' },
   { name: '2025/01/19 (日)  18:00 < 高雄流行音樂中心 > DAY6 3RD WORLD TOUR ＜FOREVER YOUNG＞ in KAOHSIUNG', value: '2', date: '2025/01/19 18:00' },
 ]
 const selectedSessionId = ref(sessionOptions[0].value)
-const selectedArea = computed(() => sessionOptions.find(area => area.value === selectedSessionId.value))
+const selectedSession = computed(() => sessionOptions.find(area => area.value === selectedSessionId.value))
 
 const route = useRoute()
 watch(() => route.query.session, () => {
@@ -201,7 +205,7 @@ const isOpenSeatModel = ref(false)
 const tempAreaData = ref()
 function handleChooseArea(area) {
   if (area.qty === 0) return
-  tempAreaData.value = area
+  tempAreaData.value = useCloned(area).cloned.value
   // 電腦選位
   if (activeChooseSelection.value === 'computer') {
     activeStep.value = 'chooseTickets'
@@ -209,6 +213,11 @@ function handleChooseArea(area) {
     return
   }
   isOpenSeatModel.value = true
+}
+
+function handleCloseAreaModal() {
+  isOpenSeatModel.value = false
+  tempAreaData.value = null
 }
 
 // 選擇座位
@@ -264,11 +273,107 @@ function getRandomTickets(tickets, count) {
 watch(choosedSeatNum, () => {
   if (Number(choosedSeatNum.value) && tempAreaData.value) {
     const randomTickets = getRandomTickets(tempAreaData.value.tickets.filter(ticket => !ticket.isSold), Number(choosedSeatNum.value))
+    randomTickets.forEach(ticket => ticket.isChoose = true)
     choosedSeatArr.value = randomTickets
   }
   console.log('已選的座位', choosedSeatArr.value)
-}, {
-  deep: true,
+})
+
+// 驗證碼
+const CaptchaInputValue = ref()
+
+const data = ref({
+  captchaCode: null,
+  isValid: false,
+})
+
+function getCaptchaCode(value) {
+  data.value.captchaCode = value
+}
+
+function checkValidCaptcha(value) {
+  data.value.isValid = value
+}
+
+const isLoading = useLoading()
+
+function handleSendCaptcha() {
+  if (!data.value.isValid) {
+    notify.value = {
+      visible: true,
+      status: 'danger',
+      message: '請輸入正確的驗證碼',
+    }
+    return
+  }
+  if (!isCheck.value) {
+    notify.value = {
+      visible: true,
+      status: 'danger',
+      message: '請勾選同意條款',
+    }
+    return
+  }
+  isLoading.value = true
+  activeStep.value = 'purchaseConfirm'
+}
+// 同意條款
+const isCheck = ref(false)
+
+// 購票確認
+const orderConfig = ref([
+  {
+    label: '演出場次',
+    value: 'session',
+  },
+  {
+    label: '區域',
+    value: 'area',
+  },
+  {
+    label: '座位',
+    value: 'seat',
+  },
+  {
+    label: '票種/票價(元)',
+    value: 'price',
+  },
+  {
+    label: '',
+    value: 'function',
+  },
+])
+
+const selectedData = computed(() => {
+  return choosedSeatArr.value.map((seat) => {
+    return {
+      session: selectedSession.value?.name,
+      area: tempAreaData.value.name,
+      seat: seat.seat,
+      price: tempAreaData.value.price,
+    }
+  })
+})
+
+const router = useRouter()
+function deleteTicket(index) {
+  if (selectedData.value.length === 1) router.push('/memberCenter?type=orderManagement')
+  else choosedSeatArr.value.splice(index, 1)
+  isLoading.value = true
+}
+
+// 送出訂單
+function handleSendOrder() {
+  isLoading.value = true
+  // activeStep.value = 'payment'
+  router.push('/memberCenter?type=orderManagement')
+}
+
+// user
+const user = ref({
+  name: 'test1',
+  email: 'test123@gmail.com',
+  phone: '0912345678',
 })
 </script>
 
@@ -367,30 +472,11 @@ watch(choosedSeatNum, () => {
           </div>
         </div>
       </template>
-      <template v-if="activeStep === 'chooseTickets'">
-        <div class="md:flex md:items-center">
-          <img
-            :src="eventData.coverUrl"
-            :alt="eventData.name"
-            class="md:h-[110px]"
-          >
-          <div class="container my-4 md:pr-0">
-            <div class="font-bold text-lg mb-2">
-              {{ eventData.name }}
-            </div>
-            <div class="flex space-x-4 w-full">
-              <span>{{ selectedArea?.date }}</span>
-              <span class="flex">
-                <Icon
-                  name="line-md:map-marker-alt-twotone-loop"
-                  size="24"
-                  class="mr-1"
-                />
-                {{ eventData.location }}
-              </span>
-            </div>
-          </div>
-        </div>
+      <template v-else-if="activeStep === 'chooseTickets'">
+        <EventSection
+          :event-data="eventData"
+          :selected-area="selectedSession"
+        />
 
         <div class="container md:px-0">
           <div class="divider" />
@@ -398,6 +484,9 @@ watch(choosedSeatNum, () => {
             <div class="text-center p-2 space-x-2 bg-gray-300">
               <span>{{ tempAreaData.name }}</span>
               <span>{{ tempAreaData.price }}</span>
+              <div class="text-xs text-primary mt-2">
+                * 最多僅可選四張票 *
+              </div>
             </div>
 
             <fwb-table>
@@ -436,19 +525,218 @@ watch(choosedSeatNum, () => {
                 </fwb-table-row>
               </fwb-table-body>
             </fwb-table>
-
-            <div class="flex justify-center">
-              驗證碼
+            <!-- 驗證碼 -->
+            <div class="flex justify-center items-center space-x-4">
+              <VueClientRecaptcha
+                :value="CaptchaInputValue"
+                class="h-[60px] w-[200px]"
+                @get-code="getCaptchaCode"
+                @is-valid="checkValidCaptcha"
+              />
+              <fwb-input
+                v-model="CaptchaInputValue"
+                placeholder="請輸入驗證碼"
+                class="focus:ring-opacity-0 focus:border-dark"
+              />
             </div>
+            <div class="flex justify-center">
+              <fwb-checkbox
+                v-model="isCheck"
+                class="cursor-pointer"
+                label="我已詳細閱讀且同意會員服務條款及節目資訊公告，並同意放棄契約審閱期，且授權貴公司於條款目的範圍內，進行本人之個人資料蒐集、處理及利用。"
+              />
+            </div>
+
+            <section class="flex justify-center space-x-4">
+              <fwb-button
+                color="alternative"
+                class="border-primary text-primary hover:bg-primary hover:text-white focus:ring-opacity-0"
+                @click="activeStep = 'chooseArea'"
+              >
+                重新選擇
+              </fwb-button>
+              <fwb-button
+                class="bg-primary text-white hover:bg-primary focus:ring-opacity-0"
+                @click="handleSendCaptcha"
+              >
+                確認張數
+              </fwb-button>
+            </section>
+
+            <section class="flex justify-center">
+              <img
+                :src="eventData.imgUrl"
+                :alt="eventData.name"
+                class="object-fit w-full md:w-[700px]"
+              >
+            </section>
           </div>
         </div>
       </template>
+
+      <template v-else-if="activeStep === 'purchaseConfirm' ">
+        <section class="space-y-6">
+          <EventSection
+            :event-data="eventData"
+            :selected-area="selectedSession"
+          />
+          <div class="divider" />
+
+          <section class="bg-gray-300">
+            <div class="p-4 font-bold flex items-center border-b-4">
+              <Icon
+                name="line-md:account"
+                size="24"
+                class="mr-2"
+              />
+              購票會員聯絡資訊
+            </div>
+
+            <div class="p-4">
+              <span class="mr-4">會員姓名</span>
+              <span>{{ user.name }}</span>
+            </div>
+            <div class="p-4">
+              <span class="mr-4">電子郵件</span>
+              <span>{{ user.email }}</span>
+            </div>
+            <div class="p-4">
+              <span class="mr-4">聯絡電話</span>
+              <span>{{ user.phone }}</span>
+            </div>
+          </section>
+
+          <div class="divider" />
+
+          <section>
+            <fwb-table class="hidden md:block">
+              <fwb-table-head>
+                <fwb-table-head-cell
+                  v-for="config in orderConfig"
+                  :key="config.value"
+                  class="text-center"
+                >
+                  <span class="text-md md:text-lg font-bold">
+                    {{ config.label }}
+                  </span>
+                </fwb-table-head-cell>
+              </fwb-table-head>
+              <fwb-table-body class="tBody">
+                <fwb-table-row
+                  v-for="(item, idx) in selectedData"
+                  :key="idx"
+                >
+                  <fwb-table-cell
+                    v-for="config in orderConfig"
+                    :key="config.value"
+                    class="text-center"
+                  >
+                    <template v-if="config.value !== 'function'">
+                      {{ item[config.value] }}
+                    </template>
+                    <template v-else>
+                      <fwb-button
+                        outline
+                        class="border-primary hover:bg-transperant text-primary hover:text-primary focus:ring-opacity-0 transition-ease"
+                        @click="deleteTicket(idx)"
+                      >
+                        <span class="flex items-center">
+                          <Icon
+                            name="material-symbols:delete-rounded"
+                            size="24"
+                            class="mr-2"
+                          />
+                          <span>刪除</span>
+                        </span>
+                      </fwb-button>
+                    </template>
+                  </fwb-table-cell>
+                </fwb-table-row>
+              </fwb-table-body>
+            </fwb-table>
+            <div class="container md:hidden">
+              <div
+                v-for="(item, idx) in selectedData"
+                :key="idx"
+                class="p-4 shadow-xl mb-8"
+              >
+                <div
+                  v-for="(config, configIdx) in orderConfig"
+                  :key="configIdx"
+                  class="flex justify-between"
+                >
+                  <div class="w-[100px] p-2 font-bold">
+                    {{ config.label }}
+                  </div>
+                  <div class="text-right w-[200px] p-2">
+                    <span
+                      v-if="config.value !== 'function'"
+                      class="block"
+                    > {{ item[config.value] }} </span>
+
+                    <fwb-button
+                      v-else
+                      outline
+                      size="sm"
+                      class="border-primary hover:bg-transperant text-primary hover:text-primary focus:ring-opacity-0 transition-ease"
+                      @click="deleteTicket(idx)"
+                    >
+                      <span class="flex items-center">
+                        <Icon
+                          name="material-symbols:delete-rounded"
+                          size="24"
+                          class="mr-2"
+                        />
+                        <span>刪除</span>
+                      </span>
+                    </fwb-button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="container md:px-0 flex flex-col md:items-end w-full space-y-4">
+            <div class="flex p-2 border-b border-gray-300">
+              <div class="mr-2 md:w-[120px] font-bold">
+                訂購張數 :
+              </div>
+              <div class="md:w-[120px]">
+                {{ selectedData.length }}
+              </div>
+            </div>
+            <div class="flex p-2 border-b border-gray-300">
+              <div class="mr-2 md:w-[120px] font-bold">
+                總計 :
+              </div>
+              <div class="md:w-[120px]">
+                {{ selectedData.reduce((acc, item) => acc + item.price, 0) }}
+              </div>
+            </div>
+          </section>
+          <section class="flex justify-center space-x-4">
+            <fwb-button
+              color="alternative"
+              class="border-primary text-primary hover:bg-primary hover:text-white focus:ring-opacity-0"
+              @click="router.push('/memberCenter?type=orderManagement')"
+            >
+              取消訂單
+            </fwb-button>
+            <fwb-button
+              class="bg-primary text-white hover:bg-primary focus:ring-opacity-0"
+              @click="handleSendOrder"
+            >
+              下一步
+            </fwb-button>
+          </section>
+        </section>
+      </template>
     </section>
 
+    <!-- 選位 Modal -->
     <fwb-modal
       v-if="isOpenSeatModel && tempAreaData"
       size="5xl"
-      @close="isOpenSeatModel = false"
+      @close="handleCloseAreaModal"
     >
       <template #header>
         <div class="flex flex-col justify-center items-center space-y-2 w-full text-sm">
@@ -516,15 +804,16 @@ watch(choosedSeatNum, () => {
         </div>
       </template>
       <template #footer>
-        <div class="flex justify-between">
+        <div class="flex justify-between space-x-4">
           <fwb-button
-            color="alternative"
+            outline
+            class="w-[50%] border-primary hover:bg-transperant text-primary hover:text-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
             @click="isOpenSeatModel = false"
           >
             取消
           </fwb-button>
           <fwb-button
-            class="bg-primary hover:bg-primary focus:ring-opacity-0"
+            class="w-[50%] bg-primary hover:bg-primary focus:ring-opacity-0"
             @click="seatConfirm"
           >
             確認座位
@@ -546,5 +835,16 @@ watch(choosedSeatNum, () => {
 }
 :deep(.tBody > tr > td){
   text-align: center !important;
+  max-width: 260px;
+  white-space: wrap;
+}
+
+:deep([type='checkbox']){
+  &:checked{
+    background-color: theme('colors.primary');
+  }
+  &:focus{
+  box-shadow: 0 0 0 1px theme('colors.primary');
+  }
 }
 </style>

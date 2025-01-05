@@ -194,34 +194,6 @@ function openModel(type: string, event: object) {
 // QRCode
 const text = ref('text-to-encode')
 const qrcode = useQRCode(text)
-
-// const dateRangePickerEl = document.getElementById('dateRangePickerId')
-// const $datepickerEl: HTMLInputElement = document.getElementById('datepicker-autohide') as HTMLInputElement
-
-// const options: DatepickerOptions = {
-//   defaultDatepickerId: null,
-//   autohide: false,
-//   format: 'mm/dd/yyyy',
-//   maxDate: null,
-//   minDate: null,
-//   orientation: 'bottom',
-//   buttons: false,
-//   autoSelectToday: 0,
-//   title: null,
-//   rangePicker: false,
-//   onShow: () => {},
-//   onHide: () => {},
-// }
-// const instanceOptions: InstanceOptions = {
-//   id: 'datepicker-custom-example',
-//   override: true,
-// }
-// const datepicker: DatepickerInterface = new Datepicker(
-//   $datepickerEl,
-//   options,
-//   instanceOptions,
-// )
-// datepicker.getDate()
 </script>
 
 <template>

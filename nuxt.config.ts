@@ -15,9 +15,8 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: ['~/assets/css/custom.scss'],
+  css: ['~/assets/css/custom.scss', '/node_modules/vue-client-recaptcha/dist/style.css'],
   modules: [
-    // '@nuxtjs/supabase',
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
     '@nuxt/test-utils/module',
