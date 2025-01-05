@@ -43,10 +43,10 @@ const userData = useUser()
         <section class="flex justify-between items-center">
           <section>
             <NuxtLink to="/">
-              <div class="text-xl font-bold bg-gray-800 w-full px-2 text-white">
+              <!-- <div class="text-xl font-bold bg-gray-800 w-full px-2 text-white">
                 S P O T I X
-              </div>
-              <!-- <fwb-navbar-logo
+              </div> -->
+              <fwb-navbar-logo
                 class="hidden md:block"
                 alt="Si-yueh"
                 image-url="/images/logo.png"
@@ -55,7 +55,7 @@ const userData = useUser()
                 src="/images/logo-sm.png"
                 alt="Si-yueh"
                 class="md:hidden h-[35px]"
-              > -->
+              >
             </NuxtLink>
           </section>
           <section class="absolute top-50 left-[32rem]">
@@ -153,7 +153,7 @@ const userData = useUser()
                 v-if="showDropdown"
                 class="absolute top-10 right-[-10px] z-10 min-w-[230px]"
               >
-                <fwb-list-group-item class="">
+                <fwb-list-group-item>
                   <div class="flex flex-col justify-start items-start">
                     <span>{{ userData.name }}</span>
                     <span class="text-[12px] text-gray-500">

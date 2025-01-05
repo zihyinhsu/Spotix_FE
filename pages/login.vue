@@ -70,15 +70,12 @@ async function handleGoogleLogin() {
     <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1">
       <div class="px-12 md:px-48">
         <div class="flex justify-center">
-          <!-- <img
+          <img
             src="/images/logo-sm.png"
             alt="si-yueh"
             class="w-[60px] md:w-[40px] md:absolute md:left-0 md:top-0 md:m-6 cursor-pointer"
             @click="navigateTo('/')"
-          > -->
-          <div class="text-3xl font-bold bg-gray-800 px-2 text-white md:absolute md:left-0 md:top-0 md:m-6 cursor-pointer">
-            S
-          </div>
+          >
         </div>
 
         <h2 class="p-6 text-center font-bold text-3xl">

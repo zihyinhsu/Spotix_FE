@@ -4,7 +4,8 @@ export interface eventType {
   orderNumber: string
   seat: string
   date: string
-  url: string
+  coverUrl: string
+  imgUrl: string
   location: string
   price: number
   description: string

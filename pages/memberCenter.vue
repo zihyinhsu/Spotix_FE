@@ -64,7 +64,8 @@ const eventsData = ref<eventType[]>(
       orderNumber: '141777450',
       seat: 'A區 5排 1號',
       date: '2024-12-27',
-      url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      coverUrl: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      imgUrl: 'https://static.tixcraft.com/images/field/field_2067_21e7675549e9d5455e0f49d218b3abb2b8eeca9480e688a9c9bc34_o.gif',
       location: '台北小巨蛋',
       price: 5000,
       description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
@@ -75,7 +76,8 @@ const eventsData = ref<eventType[]>(
       orderNumber: '141777450',
       seat: 'A區 5排 2號',
       date: '2025-08-24',
-      url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      coverUrl: 'https://static.tixcraft.com/images/activity/25_day6_70552ba96e820fbd83666c05d1b73da8.jpg',
+      imgUrl: 'https://static.tixcraft.com/images/field/field_2067_21e7675549e9d5455e0f49d218b3abb2b8eeca9480e688a9c9bc34_o.gif',
       location: '台北小巨蛋',
       price: 5000,
       description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
@@ -86,7 +88,8 @@ const eventsData = ref<eventType[]>(
       orderNumber: '141777450',
       seat: 'A區 5排 3號',
       date: '2025-08-24',
-      url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      coverUrl: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      imgUrl: 'https://static.tixcraft.com/images/field/field_2067_21e7675549e9d5455e0f49d218b3abb2b8eeca9480e688a9c9bc34_o.gif',
       location: '台北小巨蛋',
       price: 5000,
       description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
@@ -97,7 +100,8 @@ const eventsData = ref<eventType[]>(
       orderNumber: '141777450',
       seat: 'A區 5排 4號',
       date: '2025-08-24',
-      url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      coverUrl: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
+      imgUrl: 'https://static.tixcraft.com/images/field/field_2067_21e7675549e9d5455e0f49d218b3abb2b8eeca9480e688a9c9bc34_o.gif',
       location: '台北小巨蛋',
       price: 5000,
       description: 'ULC Presents YĪN YĪN LIVE IN TAIPEI 2025(1)',
@@ -154,6 +158,7 @@ const tabs = ref([
 const activeTab = ref('profile')
 watch(() => route.query.type, () => {
   activeTab.value = String(route.query.type)
+  scrollToTop()
 },
 {
   immediate: true,
@@ -189,6 +194,34 @@ function openModel(type: string, event: object) {
 // QRCode
 const text = ref('text-to-encode')
 const qrcode = useQRCode(text)
+
+// const dateRangePickerEl = document.getElementById('dateRangePickerId')
+// const $datepickerEl: HTMLInputElement = document.getElementById('datepicker-autohide') as HTMLInputElement
+
+// const options: DatepickerOptions = {
+//   defaultDatepickerId: null,
+//   autohide: false,
+//   format: 'mm/dd/yyyy',
+//   maxDate: null,
+//   minDate: null,
+//   orientation: 'bottom',
+//   buttons: false,
+//   autoSelectToday: 0,
+//   title: null,
+//   rangePicker: false,
+//   onShow: () => {},
+//   onHide: () => {},
+// }
+// const instanceOptions: InstanceOptions = {
+//   id: 'datepicker-custom-example',
+//   override: true,
+// }
+// const datepicker: DatepickerInterface = new Datepicker(
+//   $datepickerEl,
+//   options,
+//   instanceOptions,
+// )
+// datepicker.getDate()
 </script>
 
 <template>
@@ -226,7 +259,7 @@ const qrcode = useQRCode(text)
                 class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white"
               >
                 <Icon
-                  name="flowbite:arrow-up-from-bracket-outline"
+                  name="line-md:upload-loop"
                   size="30"
                 />
                 <input
@@ -467,7 +500,7 @@ const qrcode = useQRCode(text)
             >
               <div class="col-span-12 md:col-span-5">
                 <img
-                  :src="event.url"
+                  :src="event.coverUrl"
                   alt=""
                   class="h-full object-cover"
                 >

@@ -30,14 +30,17 @@ useHead({
 
 <template>
   <NuxtLayout>
-    <fwb-toast
-      v-if="notify.visible"
-      divide
-      class="fixed top-4 right-4 z-10 shadow-lg"
-      :type="notify.status"
-    >
-      {{ notify.message }}
-    </fwb-toast>
+    <Transition>
+      <fwb-toast
+        v-if="notify.visible"
+        divide
+        class="fixed top-4 right-4 z-[100] shadow-lg"
+        :type="notify.status"
+      >
+        {{ notify.message }}
+      </fwb-toast>
+    </Transition>
+
     <CustomLoading />
     <NuxtPage />
   </NuxtLayout>
@@ -49,5 +52,15 @@ body {
   height:100%;
   /* cursor: none; */
   overflow-x: hidden;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

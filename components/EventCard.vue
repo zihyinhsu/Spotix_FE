@@ -11,7 +11,7 @@ const formattedDate = useDateFormat(props.event.date, 'YYYY-MM-DD HH:mm')
   <div class="w-full h-full rounded-md overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-ease cursor-pointer hover-primary flex flex-col">
     <img
       class="object-fit w-full min-h-[160px] md:min-h-[80px]"
-      :src="props.event.url"
+      :src="props.event.coverUrl"
       alt="event"
     >
     <div class="p-4 bg-secondary bg-opacity-60 event transition-ease flex-grow flex flex-col justify-between">
