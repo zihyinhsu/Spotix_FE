@@ -15,7 +15,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: ['~/assets/css/custom.scss', '/node_modules/vue-client-recaptcha/dist/style.css', 'normalize.css/normalize.css'],
+  css: ['~/assets/css/custom.scss', '/node_modules/vue-client-recaptcha/dist/style.css'],
   modules: [
     '@nuxtjs/tailwindcss',
     '@nuxt/eslint',
@@ -56,7 +56,23 @@ export default defineNuxtConfig({
       'composables/**', // 自動匯入 composables 子資料夾中的檔案
     ],
   },
-  postcss: {},
+  postcss: {
+    plugins: {
+      'postcss-preset-env': {
+        autoprefixer: {
+          // grid: true,
+        },
+        features: {
+          'nesting-rules': true, // 啟用嵌套規則支持
+        },
+      },
+    },
+  },
+  // postcss: {
+  //   plugins: {
+  //     autoprefixer: {},
+  //   },
+  // },
   runtimeConfig: {
     public: {
       apiBase: '/',
