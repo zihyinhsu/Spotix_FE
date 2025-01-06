@@ -45,7 +45,6 @@ export default defineNuxtConfig({
         semi: false,
         quotes: 'single',
       },
-
       // standalone: false
     },
     checker: true,
@@ -58,21 +57,18 @@ export default defineNuxtConfig({
   },
   postcss: {
     plugins: {
-      'postcss-preset-env': {
-        autoprefixer: {
-          // grid: true,
-        },
-        features: {
-          'nesting-rules': true, // 啟用嵌套規則支持
-        },
-      },
+      autoprefixer: {},
+      // 'postcss-preset-env': {
+      //   'autoprefixer': {
+      //     // grid: true,
+      //   },
+      //   'features': {
+      //     'nesting-rules': true, // 啟用嵌套規則支持
+      //   },
+      //   'postcss-normalize': {}, // 添加 postcss-normalize 插件
+      // },
     },
   },
-  // postcss: {
-  //   plugins: {
-  //     autoprefixer: {},
-  //   },
-  // },
   runtimeConfig: {
     public: {
       apiBase: '/',
