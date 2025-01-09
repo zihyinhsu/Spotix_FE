@@ -1,42 +1,48 @@
 <script setup lang="ts">
-// import { validateData, validateEmailPattern } from '~/utils/validate'
-// import { navigateTo } from '#app'
+import { validateData, validateEmailPattern } from '~/utils/validate'
 
-// const supabase = useSupabaseClient()
-// const user = useSupabaseUser()
 // useState
-const userData = useUser()
-// const notify = useNotify()
+const { userLogin, userData } = useUser()
+const notify = useNotify()
 
-// if (user.value) await navigateTo('/')
-
+if (userData.value) await navigateTo('/')
+export interface LoginData {
+  email: string
+  password: string
+}
+const loginData = ref<LoginData>({
+  email: 'woodz@example.com',
+  password: 'woodz0805',
+})
 async function handleLogin() {
-  // const { email, password } = userData.value
-  // const validateResult = validateData(userData.value)
-  // if (!validateResult) return
+  const { email, password } = loginData.value
+  const validateResult = validateData(loginData.value)
+  if (!validateResult) return
 
-  // if (email && password) {
-  //   const { error } = await supabase.auth.signInWithPassword({
-  //     email,
-  //     password,
-  //   })
-  //   if (error) {
-  //     notify.value = {
-  //       visible: true,
-  //       status: 'danger',
-  //       message: '登入失敗',
-  //     }
-  //     return
-  //   }
-  //   notify.value = {
-  //     visible: true,
-  //     status: 'success',
-  //     message: '登入成功',
-  //   }
-  //   userData.value.email = ''
-  //   userData.value.password = ''
+  if (email && password) {
+    const result = await userLogin(loginData.value)
+    // const { isSuccess, message, data } = result.value
+    // if (result.value) {
+    if (!result.value?.isSuccess) {
+      notify.value = {
+        visible: true,
+        status: 'danger',
+        message: result.value?.message,
+      }
+      loginData.value = {
+        email: '',
+        password: '',
+      }
 
-  //   navigateTo('/')
+      return
+    }
+    notify.value = {
+      visible: true,
+      status: 'success',
+      message: result.value?.message,
+    }
+    navigateTo('/')
+  }
   // }
 }
 
@@ -99,32 +105,32 @@ async function handleGoogleLogin() {
           @submit.prevent="handleLogin"
         >
           <fwb-input
-            v-model="userData.email"
+            v-model="loginData.email"
             placeholder="請輸入電子郵件"
             label="Email"
             type="email"
             class="focus:border-secondary focus:ring-secondary"
-            :validation-status="userData.email && !validateEmailPattern.test(userData.email) ? 'error' : undefined"
+            :validation-status="loginData.email && !validateEmailPattern.test(loginData.email) ? 'error' : undefined"
             required
           >
             <template
-              v-if="userData.email && !validateEmailPattern.test(userData.email)"
+              v-if="loginData.email && !validateEmailPattern.test(loginData.email)"
               #validationMessage
             >
               請輸入有效的電子郵件地址
             </template>
           </fwb-input>
           <fwb-input
-            v-model="userData.password"
+            v-model="loginData.password"
             placeholder="請輸入密碼"
             label="Password"
             type="password"
             class="focus:border-secondary focus:ring-secondary"
-            :validation-status="userData.password && userData.password.length < 6 ? 'error' : undefined"
+            :validation-status="loginData.password && loginData.password.length < 6 ? 'error' : undefined"
             required
           >
             <template
-              v-if="userData.password && userData.password.length < 6"
+              v-if="loginData.password && loginData.password.length < 6"
               #validationMessage
             >
               請輸入正確的密碼

@@ -1,20 +1,43 @@
 <script setup lang="ts">
 import { useQRCode } from '@vueuse/integrations/useQRCode'
+import { useDateFormat } from '@vueuse/core'
 
 const route = useRoute()
+const notify = useNotify()
+const { userData, getUserData, updateUserProfile, userUploadAvatar } = useUser()
 
-function handleSendOrder() {
-  console.log('send order')
+// 更新會員資料
+async function handleUpdateProfile() {
+  const userDataCloned = useCloned(userFormData.value).cloned.value
+  userDataCloned.birthday = new Date(userDataCloned.birthday).toISOString()
+  const result = await updateUserProfile(userDataCloned)
+  isEdit.value = false
+  await getUserData()
+  if (result.value.isSuccess) {
+    notify.value = {
+      visible: true,
+      status: 'success',
+      message: result.value?.message,
+    }
+  }
+  else {
+    notify.value = {
+      visible: true,
+      status: 'danger',
+      message: result.value?.message,
+    }
+  }
 }
 
-const userData = useUser()
-
-const genderRadio = ref(String(userData.value.gender))
-watch(genderRadio, (value) => {
-  userData.value.gender = value === 'true'
-})
+if (!userData.value) await navigateTo('/login')
 
 const isEdit = ref(false)
+
+// 取消更改會員資料
+async function handleCancel() {
+  await getUserProfile()
+  isEdit.value = false
+}
 
 const table = ref(
   [
@@ -24,7 +47,7 @@ const table = ref(
     },
     {
       label: '姓名',
-      value: 'name',
+      value: 'userName',
     },
     {
       label: '性別',
@@ -36,7 +59,7 @@ const table = ref(
     },
     {
       label: '手機',
-      value: 'cellphone',
+      value: 'phoneNumber',
     },
     {
       label: '地址',
@@ -44,15 +67,63 @@ const table = ref(
     }])
 
 const isShowMask = ref(false)
+const userFormData = ref()
 
-function handleFileChange(event: Event) {
-  const input = event.target as HTMLInputElement
-  if (input.files && input.files[0]) {
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      userData.value.avatarUrl = e.target?.result as string
+// 性別
+const genderRadio = ref()
+watch(genderRadio, (value) => {
+  userFormData.value.gender = value === true
+},
+)
+
+// 取得會員資料
+async function getUserProfile() {
+  await nextTick()
+  await getUserData()
+
+  if (userData.value) {
+    const { email, userName, avatarUrl, gender, birthday, phoneNumber, address, lineUserId } = userData.value
+    userFormData.value = {
+      email,
+      userName,
+      avatarUrl,
+      gender,
+      phoneNumber,
+      lineUserId,
+      address,
+      birthday: useDateFormat(birthday, 'YYYY-MM-DD').value,
     }
-    reader.readAsDataURL(input.files[0])
+    genderRadio.value = String(userFormData.value.gender)
+    console.log('userFormData.value', userFormData.value, genderRadio.value)
+  }
+}
+
+await nextTick()
+await getUserProfile()
+
+async function handleFileChange(event: Event) {
+  const input = event.target as HTMLInputElement
+  if (input.files && input.files.length > 0) {
+    const formData = new FormData()
+    formData.append('file', input.files[0])
+    const result = await userUploadAvatar(formData)
+    if (result.value?.isSuccess) {
+      notify.value = {
+        visible: true,
+        status: 'success',
+        message: result.value?.message,
+      }
+      if (userData.value) {
+        userData.value.avatarUrl = result.value.data?.[0].imageUrl
+      }
+    }
+    else {
+      notify.value = {
+        visible: true,
+        status: 'danger',
+        message: result.value?.message,
+      }
+    }
   }
 }
 
@@ -222,7 +293,7 @@ const qrcode = useQRCode(text)
               @mouseleave="isShowMask = false"
             >
               <img
-                :src="userData.avatarUrl"
+                :src="userData?.avatarUrl"
                 alt="cover"
                 class="w-full h-full object-cover"
               >
@@ -255,35 +326,35 @@ const qrcode = useQRCode(text)
           <form
             v-if="isEdit"
             class="flex flex-col space-y-4 mb-4"
-            @submit.prevent="handleSendOrder"
+            @submit.prevent="handleUpdateProfile"
           >
             <fwb-input
-              v-model="userData.email"
+              v-model="userFormData.email"
               placeholder="請輸入電子郵件"
               label="Email"
               type="email"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="userData.email && !validateEmailPattern.test(userData.email) ? 'error' : undefined"
-              required
+              :validation-status="userData.email && !validateEmailPattern.test(userFormData.email) ? 'error' : undefined"
+              disabled
             >
               <template
-                v-if="userData.email && !validateEmailPattern.test(userData.email)"
+                v-if="userData.email && !validateEmailPattern.test(userFormData.email)"
                 #validationMessage
               >
                 請輸入有效的電子郵件地址
               </template>
             </fwb-input>
             <fwb-input
-              v-model="userData.name"
+              v-model="userFormData.userName"
               placeholder="請輸入姓名"
               label="姓名"
               type="text"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="userData.name && userData.name?.length < 2 ? 'error' : undefined"
+              :validation-status="userFormData.userName && userFormData.userName?.length < 2 ? 'error' : undefined"
               required
             >
               <template
-                v-if="userData.name && userData.name?.length < 2"
+                v-if="userFormData.userName && userFormData.userName?.length < 2"
                 #validationMessage
               >
                 請輸入正確的姓名
@@ -310,7 +381,7 @@ const qrcode = useQRCode(text)
 
             <div>
               <fwb-input
-                v-model="userData.birthday"
+                v-model="userFormData.birthday"
                 class="focus:border-secondary focus:ring-secondary"
                 type="date"
                 label="生日"
@@ -320,32 +391,32 @@ const qrcode = useQRCode(text)
             </div>
 
             <fwb-input
-              v-model="userData.cellphone"
+              v-model="userFormData.phoneNumber"
               placeholder="請輸入手機"
               label="手機"
               type="tel"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="userData.cellphone && !validateCellphonePattern.test(userData.cellphone) ? 'error' : undefined"
+              :validation-status="userFormData.phoneNumber && !validateCellphonePattern.test(userFormData.phoneNumber) ? 'error' : undefined"
               required
             >
               <template
-                v-if="userData.cellphone && !validateCellphonePattern.test(userData.cellphone)"
+                v-if="userFormData.phoneNumber && !validateCellphonePattern.test(userFormData.phoneNumber)"
                 #validationMessage
               >
                 請輸入正確的手機號碼
               </template>
             </fwb-input>
             <fwb-input
-              v-model="userData.address"
+              v-model="userFormData.address"
               placeholder="請輸入地址"
               label="地址"
               type="text"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="userData.address && !userData.address?.length ? 'error' : undefined"
+              :validation-status="!userFormData.address ? 'error' : undefined"
               required
             >
               <template
-                v-if="userData.address && !userData.address?.length"
+                v-if="!userFormData.address"
                 #validationMessage
               >
                 請輸入地址
@@ -361,7 +432,7 @@ const qrcode = useQRCode(text)
               <fwb-button
                 outline
                 class="w-[50%] border-primary hover:bg-transperant text-primary hover:text-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
-                @click="isEdit=false"
+                @click="handleCancel"
               >
                 取消
               </fwb-button>
@@ -379,9 +450,9 @@ const qrcode = useQRCode(text)
                   {{ config.label }}
                 </div>
                 <div class="py-2">
-                  <span v-if="config.value === 'birthday'">{{ userData.birthday }}</span>
-                  <span v-else-if="config.value ==='gender'">{{ userData[config.value] ?'女':'男' }}</span>
-                  <span v-else-if="config.value !== 'avatarUrl'"> {{ userData[config.value] }}</span>
+                  <span v-if="config.value === 'birthday'">{{ userFormData.birthday }}</span>
+                  <span v-else-if="config.value ==='gender'">{{ userFormData[config.value] ?'女':'男' }}</span>
+                  <span v-else-if="config.value !== 'avatarUrl'"> {{ userFormData[config.value] }}</span>
                 </div>
               </div>
               <div class="border-b border-gray-300" />
@@ -408,9 +479,9 @@ const qrcode = useQRCode(text)
                 >
                 <div class="text-sm font-bold">
                   <span
-                    :class=" { 'text-primary': userData.lineUserId.length == 0 }"
+                    :class=" { 'text-primary': !userFormData.lineUserId }"
                   >
-                    {{ userData.lineUserId.length ? '已連結':'尚未連結' }}  Line
+                    {{ userFormData.lineUserId ? '已連結':'尚未連結' }}  Line
                   </span>
                   ，請務必加入官方帳號
                 </div>

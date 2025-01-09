@@ -213,11 +213,13 @@ function handleChooseArea(area) {
     return
   }
   isOpenSeatModel.value = true
+  choosedSeatArr.value = []
 }
 
-function handleCloseAreaModal() {
+function handleResetAreaModal() {
   isOpenSeatModel.value = false
   tempAreaData.value = null
+  choosedSeatArr.value = []
 }
 
 // 選擇座位
@@ -736,7 +738,7 @@ const user = ref({
     <fwb-modal
       v-if="isOpenSeatModel && tempAreaData"
       size="5xl"
-      @close="handleCloseAreaModal"
+      @close="handleResetAreaModal"
     >
       <template #header>
         <div class="flex flex-col justify-center items-center space-y-2 w-full text-sm">
@@ -808,7 +810,7 @@ const user = ref({
           <fwb-button
             outline
             class="w-[50%] border-primary hover:bg-transperant text-primary hover:text-primary focus:ring-opacity-0 transition duration-500 ease-in-out"
-            @click="isOpenSeatModel = false"
+            @click="handleResetAreaModal"
           >
             取消
           </fwb-button>

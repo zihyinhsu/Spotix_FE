@@ -3,7 +3,8 @@ import type { UseFetchOptions, AsyncData } from 'nuxt/app'
 import type { FetchError, FetchResponse, SearchParameters } from 'ofetch'
 import { hash } from 'ohash'
 import { nextTick } from 'vue'
-import { useNotify } from './states/notifyState'
+// import { useNotify } from './states/notifyState'
+import { useUser } from './states/userState'
 import { useLoading } from './states/loadingState'
 
 type KeysOf<T> = Array<
@@ -43,7 +44,7 @@ function checkRef(obj: Record<string, any>) {
 }
 
 function fetch<T>(url: UrlType, opts: HttpOption<T>) {
-  const notify = useNotify()
+  // const notify = useNotify()
   const isLoading = useLoading()
   // Check the `key` option
   const { key, params, watch } = opts
@@ -75,22 +76,30 @@ function fetch<T>(url: UrlType, opts: HttpOption<T>) {
       //   'Content-Type': 'application/json',
       // }
       options.headers = new Headers()
-      options.headers.set('Content-Type', 'application/json')
+
       // options.headers.set('Content-Language', locale)
+      // Add JWT Token to the headers if it exists
+      // options.headers.set('Content-Type', 'multipart/form-data')
+
+      const { userData } = useUser()
+      if (userData.value?.jwtToken) {
+        options.headers.set('ngrok-skip-browser-warning', 'true')
+        options.headers.set('Authorization', `Bearer ${userData.value?.jwtToken}`)
+      }
     },
     // Response interception
     onResponse(
       { response: { _data: data }, options: { method } },
     ) {
       // Handle the response
-      // console.log('onResponse', method, data)
+      console.log('onResponse', method, data)
       nextTick(() => {
-        if (method !== 'GET')
-          notify.value = {
-            visible: true,
-            status: data.isSuccess ? 'success' : 'danger',
-            message: data.message,
-          }
+        // if (method !== 'GET')
+        //   notify.value = {
+        //     visible: true,
+        //     status: data.isSuccess ? 'success' : 'danger',
+        //     message: data.message,
+        //   }
         isLoading.value = true
       })
     },
@@ -106,6 +115,7 @@ function fetch<T>(url: UrlType, opts: HttpOption<T>) {
   return data
 }
 const baseUrl = '/api'
+
 export const useHttp = {
   get: <T>(url: UrlType, params?: SearchParameters, option?: HttpOption<T>) => {
     let str = ''
@@ -115,9 +125,8 @@ export const useHttp = {
         else str += `&${key}=${value}`
       })
     }
-    if (str)url = baseUrl + `${url}?${str}`
-    else url = baseUrl + url
-
+    if (str)url = `${url}?${str}`
+    else url = `${url}`
     // console.log(
     //   'method:'
     //   + 'get'
@@ -127,7 +136,12 @@ export const useHttp = {
     //   + JSON.stringify(params),
     // )
 
-    return fetch<T>(() => url, {
+    // return fetch<T>(() => baseUrl + url, {
+    //   method: 'get',
+    //   params,
+    //   ...option,
+    // })
+    return fetch<T>(() => baseUrl + url, {
       method: 'get',
       params,
       ...option,
@@ -184,5 +198,16 @@ export const useHttp = {
     //   + JSON.stringify(body),
     // )
     return fetch<T>(() => baseUrl + url, { method: 'delete', body, ...option })
+  },
+  uploadPost: <T>(
+    url: UrlType,
+    body?: RequestInit['body'] | Record<string, any>,
+    option?: HttpOption<T>,
+  ) => {
+    return fetch<T>(() => baseUrl + url, {
+      method: 'post',
+      body: body,
+      ...option,
+    })
   },
 }

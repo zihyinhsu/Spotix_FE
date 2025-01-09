@@ -1,36 +1,14 @@
 <script setup lang="ts">
 // import { handleSearch } from '~/utils/commonFunc'
 
-// const supabase = useSupabaseClient()
-// const userData = useSupabaseUser()
+const { userData, userLogout } = useUser()
+
 // const notify = useNotify()
 const search = useSearch()
-// const { cartData } = useCartData()
 
 const showDropdown = ref(false)
-async function handleSignOut() {
-  // const { error } = await supabase.auth.signOut()
-  // if (error) {
-  //   notify.value = {
-  //     visible: true,
-  //     status: 'danger',
-  //     message: error?.message,
-  //   }
-  //   return
-  // }
-  // notify.value = {
-  //   visible: true,
-  //   status: 'success',
-  //   message: '登出成功',
-  // }
-  // showDropdown.value = false
-  // cartData.value = null
-  // navigateTo('/login')
-}
 
 const route = useRoute()
-
-const userData = useUser()
 </script>
 
 <template>
@@ -43,9 +21,6 @@ const userData = useUser()
         <section class="flex justify-between items-center">
           <section>
             <NuxtLink to="/">
-              <!-- <div class="text-xl font-bold bg-gray-800 w-full px-2 text-white">
-                S P O T I X
-              </div> -->
               <fwb-navbar-logo
                 class="hidden md:block"
                 alt="Si-yueh"
@@ -155,7 +130,7 @@ const userData = useUser()
               >
                 <fwb-list-group-item>
                   <div class="flex flex-col justify-start items-start">
-                    <span>{{ userData.name }}</span>
+                    <span>{{ userData.userName }}</span>
                     <span class="text-[12px] text-gray-500">
                       {{ userData.email }}
                     </span>
@@ -208,7 +183,7 @@ const userData = useUser()
                 </fwb-list-group-item>
                 <fwb-list-group-item
                   class="flex items-center cursor-pointer"
-                  @click="handleSignOut"
+                  @click="userLogout"
                 >
                   <Icon
                     name="line-md:logout"
