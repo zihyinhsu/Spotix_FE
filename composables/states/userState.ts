@@ -1,5 +1,7 @@
 import { useNotify } from './notifyState'
 import { useCookie } from '#app'
+import type { LoginData } from '~/pages/login.vue'
+import type { UserFormData } from '~/pages/register.vue'
 
 export interface User {
   id?: string
@@ -10,7 +12,7 @@ export interface User {
   phoneNumber?: string
   address?: string
   avatarUrl?: string
-  lineUserId?: string
+  lineId?: string
   roles?: string[]
   orders?: string[]
   jwtToken?: string
@@ -36,7 +38,7 @@ export const useUser = () => {
     }
   }
 
-  async function userLogin(param) {
+  async function userLogin(param: LoginData) {
     const { data } = await auth.apiPostLogin(param)
     if (data.value.data?.[0]) {
       const { email, userName, avatarUrl, jwtToken } = data.value.data[0]
@@ -48,6 +50,22 @@ export const useUser = () => {
       }
       userCookie.value = JSON.stringify(userData.value) // setCookie
     }
+
+    return data
+  }
+
+  async function userRegister(param: UserFormData) {
+    const { data } = await auth.apiPostRegister(param)
+    // if (data.value.data?.[0]) {
+    //   const { email, userName, avatarUrl, jwtToken } = data.value.data[0]
+    //   userData.value = {
+    //     email,
+    //     userName,
+    //     avatarUrl,
+    //     jwtToken,
+    //   }
+    //   userCookie.value = JSON.stringify(userData.value) // setCookie
+    // }
 
     return data
   }
@@ -75,15 +93,6 @@ export const useUser = () => {
     reFetchUserData(data)
   }
 
-  async function userLineLogin(code) {
-    const { data } = await auth.apiLineLogin({
-      authToken: code,
-      callbackUrl: window.location.origin,
-    })
-    reFetchUserData(data)
-    return data
-  }
-
   function reFetchUserData(data) {
     if (data?.value?.data?.[0]) userData.value = {
       ...userData.value,
@@ -97,5 +106,23 @@ export const useUser = () => {
     return data
   }
 
-  return { initUserState, userData, userLogin, userLineLogin, userLogout, getUserData, updateUserProfile, userUploadAvatar }
+  // Line Login
+  async function getLineUrl() {
+    const { data } = await auth.apiGetLineUrl({
+      redirectUrl: window.location.origin,
+    })
+
+    const returnUri = data.value.data?.[0].returnUri
+    if (returnUri) window.location.href = returnUri
+  }
+  async function userLineLogin(code) {
+    const { data } = await auth.apiLineLogin({
+      authToken: code,
+      callbackUrl: window.location.origin,
+    })
+    reFetchUserData(data)
+    return data
+  }
+
+  return { initUserState, userData, userLogin, userRegister, getLineUrl, userLineLogin, userLogout, getUserData, updateUserProfile, userUploadAvatar }
 }

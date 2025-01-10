@@ -2,10 +2,11 @@
 import { validateData, validateEmailPattern } from '~/utils/validate'
 
 // useState
-const { userLogin, userData } = useUser()
+const { userLogin, userData, getLineUrl } = useUser()
 const notify = useNotify()
 
 if (userData.value) await navigateTo('/')
+
 export interface LoginData {
   email: string
   password: string
@@ -45,44 +46,35 @@ async function handleLogin() {
     }
   }
 }
-
-// line 登入
-async function handleLineLogin() {
-  const { data } = await auth.apiGetLineUrl({
-    redirectUrl: window.location.origin,
-  })
-
-  const returnUri = data.value.data?.[0].returnUri
-  if (returnUri) window.location.href = returnUri
-}
 </script>
 
 <template>
   <div class="grid grid-cols-12 md:h-screen">
-    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1">
+    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1 mt-[240px] md:mt-0">
       <div class="px-12 md:px-48">
         <div class="flex justify-center">
           <img
             src="/images/logo-sm.png"
             alt="si-yueh"
-            class="w-[60px] md:w-[40px] md:absolute md:left-0 md:top-0 md:m-6 cursor-pointer"
+            class="w-[40px] md:absolute md:left-0 md:top-0 md:m-6 cursor-pointer"
             @click="navigateTo('/')"
           >
         </div>
 
         <h2 class="p-6 text-center font-bold text-3xl">
-          Sign in
+          Sign In
         </h2>
         <button
           type="submit"
-          class="w-full text-[14px] py-[6px] px-[8px] flex justify-center items-center border-[1.5px] bg-[#02C153] text-white rounded-lg hover:-translate-y-1 transition-ease"
-          @click="handleLineLogin"
+          class="w-full text-[14px] py-[6px] px-[8px] flex justify-center items-center border-[1.5px] bg-[#00C854] text-white rounded-lg hover:-translate-y-1 transition-ease"
+          @click="getLineUrl"
         >
-          <img
-            src="/images/line.png"
-            class="w-[24px] h-[24px] mr-2"
-            alt="line"
-          >
+          <Icon
+            name="lineicons:line"
+            size="24"
+            class="mr-2"
+          />
+
           Continue with LINE
         </button>
         <div class="divider" />
@@ -143,7 +135,7 @@ async function handleLineLogin() {
         </div>
       </div>
     </div>
-    <div class="col-span-12 md:col-span-6 order-1 md:order-2 mb-10 md:mb-0">
+    <div class="col-span-12 md:col-span-6 order-1 md:order-2 mb-10 md:mb-0 absolute md:static top-[-150px]">
       <img
         src="/images/login.jpg"
         alt="spotix"

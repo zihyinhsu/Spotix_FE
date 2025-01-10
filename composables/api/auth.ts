@@ -1,4 +1,10 @@
 const Auth = {
+  apiPostRegister(params, option?: HttpOption<User[]>) {
+    return useHttp.post<User[]>('/auth/register', params, {
+      ...option,
+    })
+  },
+
   apiPostLogin(params, option?: HttpOption<User[]>) {
     return useHttp.post<User[]>('/auth/login', params, {
       ...option,

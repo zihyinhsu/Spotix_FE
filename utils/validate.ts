@@ -1,11 +1,12 @@
 import type { LoginData } from '~/pages/login.vue'
+import type { UserFormData } from '~/pages/register.vue'
 
 export const validateEmailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 export const validateCellphonePattern = /^09\d{8}$/
 
-export function validateData<T extends LoginData | encryptOrderType>(data: T): boolean {
+export function validateData<T extends UserFormData | LoginData | encryptOrderType>(data: T): boolean {
   if ('password' in data) {
-    const { email, password, userName } = data as LoginData
+    const { email, password, userName } = data as UserFormData
     if (email && !validateEmailPattern.test(email)) return false
     if (!password || password.length < 6) return false
     if (userName && userName.length < 2) return false

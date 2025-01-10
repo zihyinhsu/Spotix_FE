@@ -11,14 +11,6 @@ const { initUserState } = useUser()
 
 initUserState()
 
-// const user = useSupabaseUser()
-// onMounted(async () => {
-//   if (user.value) {
-//     await nextTick()
-//     await getCart()
-//   }
-// })
-
 // line login
 const { userData, userLineLogin } = useUser()
 onMounted(async () => {

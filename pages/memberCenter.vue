@@ -12,7 +12,6 @@ async function handleUpdateProfile() {
   userDataCloned.birthday = new Date(userDataCloned.birthday).toISOString()
   const result = await updateUserProfile(userDataCloned)
   isEdit.value = false
-  await getUserData()
   if (result.value.isSuccess) {
     notify.value = {
       visible: true,
@@ -82,14 +81,14 @@ async function getUserProfile() {
   await getUserData()
 
   if (userData.value) {
-    const { email, userName, avatarUrl, gender, birthday, phoneNumber, address, lineUserId } = userData.value
+    const { email, userName, avatarUrl, gender, birthday, phoneNumber, address, lineId } = userData.value
     userFormData.value = {
       email,
       userName,
       avatarUrl,
       gender,
       phoneNumber,
-      lineUserId,
+      lineId,
       address,
       birthday: useDateFormat(birthday, 'YYYY-MM-DD').value,
     }
@@ -292,10 +291,18 @@ const qrcode = useQRCode(text)
               @mouseleave="isShowMask = false"
             >
               <img
+                v-if="userData?.avatarUrl"
                 :src="userData?.avatarUrl"
                 alt="cover"
                 class="w-full h-full object-cover"
               >
+              <img
+                else
+                src="/images/avatar.png"
+                alt="cover"
+                class="w-full h-full object-cover"
+              >
+
               <div
                 v-if="isShowMask"
                 class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white"
@@ -418,7 +425,7 @@ const qrcode = useQRCode(text)
                 v-if="!userFormData.address"
                 #validationMessage
               >
-                請輸入地址
+                請輸入正確的地址
               </template>
             </fwb-input>
             <div class="flex w-full space-x-4">
@@ -480,7 +487,7 @@ const qrcode = useQRCode(text)
                   <span
                     :class=" { 'text-primary': !userFormData.lineUserId }"
                   >
-                    {{ userFormData.lineUserId ? '已連結':'尚未連結' }}  Line
+                    {{ userFormData.lineId ? '已連結':'尚未連結' }}  Line
                   </span>
                   ，請務必加入官方帳號
                 </div>

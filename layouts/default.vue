@@ -79,14 +79,14 @@ const route = useRoute()
             </NuxtLink>
             <NuxtLink
               v-if="userData"
-              to="/memberCenter?type=profile"
+              to="/memberCenter?type=tickets"
               class="desktop-only cursor-pointer"
               @click="showDropdown = false"
             >
               <fwb-button
                 class="nav-link"
               >
-                會員資料
+                我的票券
               </fwb-button>
             </NuxtLink>
             <NuxtLink
@@ -109,11 +109,19 @@ const route = useRoute()
                 @click="showDropdown = !showDropdown"
               >
                 <div class="rounded-full w-[45px] h-[45px] overflow-hidden">
+
                   <img
+                    v-if="userData.avatarUrl"
                     :src="userData.avatarUrl"
                     alt="cover"
                     class="w-[45px] object-cover"
                   >
+                  <fwb-avatar
+                    v-else
+                    size="md"
+                    rounded
+                    class="border-2 border-gray-400 rounded-full"
+                  />
                 </div>
                 <span class="p-1 bg-white shadow-md absolute bottom-[-5px] right-[-15px] rounded-full">
                   <Icon
@@ -137,15 +145,10 @@ const route = useRoute()
                   </div>
                 </fwb-list-group-item>
                 <fwb-list-group-item
-                  class="cursor-pointer mobile-only"
+                  class="flex items-center cursor-pointer"
                   @click="navigateTo('/memberCenter?type=profile'), showDropdown = false"
                 >
                   <div class="flex items-center">
-                    <!-- <Icon
-                      name="lets-icons:order-duotone"
-                      size="25"
-                      class="mr-1"
-                    /> -->
                     <Icon
                       name="line-md:account-small"
                       size="25"
@@ -155,7 +158,7 @@ const route = useRoute()
                   </div>
                 </fwb-list-group-item>
                 <fwb-list-group-item
-                  class="flex items-center cursor-pointer"
+                  class="cursor-pointer mobile-only"
                   @click="navigateTo('/memberCenter?type=tickets'), showDropdown = false"
                 >
                   <div class="flex items-center">
