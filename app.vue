@@ -7,6 +7,9 @@ watch(() => notify.value.visible, (newVal) => {
     }, 2000)
   }
 })
+const { initUserState } = useUser()
+
+initUserState()
 
 // const user = useSupabaseUser()
 // onMounted(async () => {

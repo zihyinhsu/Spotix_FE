@@ -21,29 +21,29 @@ async function handleLogin() {
 
   if (email && password) {
     const result = await userLogin(loginData.value)
-    // const { isSuccess, message, data } = result.value
-    // if (result.value) {
-    if (!result.value?.isSuccess) {
+    const { isSuccess, message } = result.value
+    if (result.value) {
+      if (!isSuccess) {
+        notify.value = {
+          visible: true,
+          status: 'danger',
+          message: message,
+        }
+        loginData.value = {
+          email: '',
+          password: '',
+        }
+
+        return
+      }
       notify.value = {
         visible: true,
-        status: 'danger',
-        message: result.value?.message,
+        status: 'success',
+        message: message,
       }
-      loginData.value = {
-        email: '',
-        password: '',
-      }
-
-      return
+      navigateTo('/')
     }
-    notify.value = {
-      visible: true,
-      status: 'success',
-      message: result.value?.message,
-    }
-    navigateTo('/')
   }
-  // }
 }
 
 async function handleGoogleLogin() {

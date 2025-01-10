@@ -21,10 +21,19 @@ export const useUser = () => {
   const userCookie = useCookie('userData', {
     maxAge: 60 * 30, // 30 分鐘 token 過期
   })
-  const userData = useState<User | null>('user')
+  const userData = useState<User | null>('user', () => null)
 
-  if (userCookie.value && !userData.value) {
-    userData.value = userCookie.value as unknown as User
+  async function initUserState() {
+    if (import.meta.client) {
+      try {
+        if (userCookie.value && !userData.value) {
+          userData.value = userCookie.value as unknown as User
+        }
+      }
+      catch (error) {
+        console.error('Failed to initialize user state:', error)
+      }
+    }
   }
 
   async function userLogin(param) {
@@ -64,8 +73,8 @@ export const useUser = () => {
   async function getUserData() {
     const { data } = await auth.apiGetUserProfile()
     if (data?.value?.data?.[0]) userData.value = {
-      ...data.value.data?.[0],
       ...userData.value,
+      ...data.value.data?.[0],
     }
     userCookie.value = JSON.stringify(userData.value)
   }
@@ -75,5 +84,5 @@ export const useUser = () => {
     return data
   }
 
-  return { userData, userLogin, userLogout, getUserData, updateUserProfile, userUploadAvatar }
+  return { initUserState, userData, userLogin, userLogout, getUserData, updateUserProfile, userUploadAvatar }
 }
