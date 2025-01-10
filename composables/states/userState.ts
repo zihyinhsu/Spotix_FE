@@ -1,3 +1,6 @@
+import { useNotify } from './notifyState'
+import { useCookie } from '#app'
+
 export interface User {
   id?: string
   userName: string
@@ -13,16 +16,16 @@ export interface User {
   jwtToken?: string
 };
 export const useUser = () => {
-  // const notify = useNotify()
+  const notify = useNotify()
 
-  // const userCookie = useCookie('userData', {
-  //   maxAge: 60 * 30, // 30 分鐘 token 過期
-  // })
+  const userCookie = useCookie('userData', {
+    maxAge: 60 * 30, // 30 分鐘 token 過期
+  })
   const userData = useState<User | null>('user')
 
-  // if (userCookie.value) {
-  //   userData.value = userCookie.value as unknown as User
-  // }
+  if (userCookie.value && !userData.value) {
+    userData.value = userCookie.value as unknown as User
+  }
 
   async function userLogin(param) {
     const { data } = await auth.apiPostLogin(param)
@@ -34,23 +37,23 @@ export const useUser = () => {
         avatarUrl,
         jwtToken,
       }
-      // userCookie.value = JSON.stringify(userData.value) // setCookie
+      userCookie.value = JSON.stringify(userData.value) // setCookie
     }
 
     return data
   }
 
   function userLogout() {
-    // userCookie.value = null
+    userCookie.value = null
     userData.value = null
 
     navigateTo('/login')
 
-    // notify.value = {
-    //   visible: true,
-    //   status: 'success',
-    //   message: '登出成功',
-    // }
+    notify.value = {
+      visible: true,
+      status: 'success',
+      message: '登出成功',
+    }
   }
 
   async function updateUserProfile(profileData) {
@@ -64,7 +67,7 @@ export const useUser = () => {
       ...data.value.data?.[0],
       ...userData.value,
     }
-    // userCookie.value = JSON.stringify(userData.value)
+    userCookie.value = JSON.stringify(userData.value)
   }
 
   async function userUploadAvatar(formData: FormData) {

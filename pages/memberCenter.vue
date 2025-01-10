@@ -72,7 +72,7 @@ const userFormData = ref()
 // 性別
 const genderRadio = ref()
 watch(genderRadio, (value) => {
-  userFormData.value.gender = value === true
+  userFormData.value.gender = value === 'true'
 },
 )
 
@@ -94,7 +94,6 @@ async function getUserProfile() {
       birthday: useDateFormat(birthday, 'YYYY-MM-DD').value,
     }
     genderRadio.value = String(userFormData.value.gender)
-    console.log('userFormData.value', userFormData.value, genderRadio.value)
   }
 }
 
