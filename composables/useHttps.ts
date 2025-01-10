@@ -82,8 +82,8 @@ function fetch<T>(url: UrlType, opts: HttpOption<T>) {
       // options.headers.set('Content-Type', 'multipart/form-data')
 
       const { userData } = useUser()
+      options.headers.set('ngrok-skip-browser-warning', 'true')
       if (userData.value?.jwtToken) {
-        options.headers.set('ngrok-skip-browser-warning', 'true')
         options.headers.set('Authorization', `Bearer ${userData.value?.jwtToken}`)
       }
     },
@@ -136,11 +136,6 @@ export const useHttp = {
     //   + JSON.stringify(params),
     // )
 
-    // return fetch<T>(() => baseUrl + url, {
-    //   method: 'get',
-    //   params,
-    //   ...option,
-    // })
     return fetch<T>(() => baseUrl + url, {
       method: 'get',
       params,

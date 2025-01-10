@@ -17,9 +17,7 @@ const Auth = {
     })
   },
 
-  apiUploadAvatar(formData: FormData, option?: HttpOption<{
-    imegeUrl: string
-  }>) {
+  apiUploadAvatar(formData: FormData, option?: HttpOption<{ imegeUrl: string }>) {
     return useHttp.uploadPost<{
       imegeUrl: string
     }>('/auth/UploadAvatar', formData, {
@@ -27,6 +25,18 @@ const Auth = {
     })
   },
 
+  // Line login
+  apiGetLineUrl(params, option?: HttpOption<{ returnUri: string }>) {
+    return useHttp.get<{ returnUri: string }>('/linelogin/url', params, {
+      ...option,
+    })
+  },
+
+  apiLineLogin(params, option?: HttpOption<User[]>) {
+    return useHttp.get<User[]>('/linelogin/tokens', params, {
+      ...option,
+    })
+  },
 }
 
 export default Auth

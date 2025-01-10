@@ -19,6 +19,26 @@ initUserState()
 //   }
 // })
 
+// line login
+const { userData, userLineLogin } = useUser()
+onMounted(async () => {
+  const route = useRoute()
+  const router = useRouter()
+  if (route.query.code && !userData.value) {
+    await nextTick()
+    const result = await userLineLogin(route.query.code)
+    const { isSuccess } = result.value
+    if (isSuccess) {
+      router.replace({ path: '/', query: {} })
+      notify.value = {
+        visible: true,
+        status: 'success',
+        message: '登入成功',
+      }
+    }
+  }
+})
+
 useHead({
   meta: [
     { name: 'title', content: 'Spotix' },

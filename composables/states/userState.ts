@@ -72,6 +72,19 @@ export const useUser = () => {
 
   async function getUserData() {
     const { data } = await auth.apiGetUserProfile()
+    reFetchUserData(data)
+  }
+
+  async function userLineLogin(code) {
+    const { data } = await auth.apiLineLogin({
+      authToken: code,
+      callbackUrl: window.location.origin,
+    })
+    reFetchUserData(data)
+    return data
+  }
+
+  function reFetchUserData(data) {
     if (data?.value?.data?.[0]) userData.value = {
       ...userData.value,
       ...data.value.data?.[0],
@@ -84,5 +97,5 @@ export const useUser = () => {
     return data
   }
 
-  return { initUserState, userData, userLogin, userLogout, getUserData, updateUserProfile, userUploadAvatar }
+  return { initUserState, userData, userLogin, userLineLogin, userLogout, getUserData, updateUserProfile, userUploadAvatar }
 }

@@ -46,28 +46,14 @@ async function handleLogin() {
   }
 }
 
-async function handleGoogleLogin() {
-  // const { error } = await supabase.auth.signInWithOAuth({
-  //   provider: 'google',
-  //   options: {
-  //     redirectTo: '/',
-  //   },
-  // })
+// line 登入
+async function handleLineLogin() {
+  const { data } = await auth.apiGetLineUrl({
+    redirectUrl: window.location.origin,
+  })
 
-  // if (error) {
-  //   notify.value = {
-  //     visible: true,
-  //     status: 'danger',
-  //     message: '登入失敗',
-  //   }
-  //   return
-  // }
-
-  // notify.value = {
-  //   visible: true,
-  //   status: 'success',
-  //   message: '登入中...',
-  // }
+  const returnUri = data.value.data?.[0].returnUri
+  if (returnUri) window.location.href = returnUri
 }
 </script>
 
@@ -89,15 +75,15 @@ async function handleGoogleLogin() {
         </h2>
         <button
           type="submit"
-          class="w-full text-[14px] py-[6px] px-[8px] flex justify-center items-center border-[1.5px] border-gray-300 rounded-lg hover:-translate-y-1 transition-ease"
-          @click="handleGoogleLogin"
+          class="w-full text-[14px] py-[6px] px-[8px] flex justify-center items-center border-[1.5px] bg-[#02C153] text-white rounded-lg hover:-translate-y-1 transition-ease"
+          @click="handleLineLogin"
         >
-          <Icon
-            name="flat-color-icons:google"
-            size="24"
-            class="mr-2"
-          />
-          Continue with Google
+          <img
+            src="/images/line.png"
+            class="w-[24px] h-[24px] mr-2"
+            alt="line"
+          >
+          Continue with LINE
         </button>
         <div class="divider" />
         <form
