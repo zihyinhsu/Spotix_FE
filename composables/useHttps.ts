@@ -18,7 +18,7 @@ type UrlType =
   | (() => string | Request)
 type $TSFixed = any // Fix the TypeScript error
 
-interface ResOptions<T> {
+export interface ResOptions<T> {
   data?: T
   status: number
   message: string
@@ -75,15 +75,14 @@ function fetch<T>(url: UrlType, opts: HttpOption<T>) {
       // options.headers = {
       //   'Content-Type': 'application/json',
       // }
-      options.headers = new Headers()
 
       // options.headers.set('Content-Language', locale)
-      // Add JWT Token to the headers if it exists
-      // options.headers.set('Content-Type', 'multipart/form-data')
 
+      options.headers = new Headers()
       const { userData } = useUser()
       options.headers.set('ngrok-skip-browser-warning', 'true')
       if (userData.value?.jwtToken) {
+        // Add JWT Token to the headers if it exists
         options.headers.set('Authorization', `Bearer ${userData.value?.jwtToken}`)
       }
     },
@@ -93,6 +92,7 @@ function fetch<T>(url: UrlType, opts: HttpOption<T>) {
     ) {
       // Handle the response
       console.log('onResponse', method, data)
+
       nextTick(() => {
         // if (method !== 'GET')
         //   notify.value = {
@@ -135,7 +135,6 @@ export const useHttp = {
     //   + ' || data:'
     //   + JSON.stringify(params),
     // )
-
     return fetch<T>(() => baseUrl + url, {
       method: 'get',
       params,

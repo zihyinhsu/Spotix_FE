@@ -94,7 +94,7 @@ async function handleSignUp() {
 
 <template>
   <div class="grid grid-cols-12 md:h-screen">
-    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1 mt-[180px] md:mt-0">
+    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1 mt-[140px] md:mt-0">
       <div class="px-12 md:px-48">
         <div class="flex justify-center">
           <img
@@ -105,7 +105,7 @@ async function handleSignUp() {
           >
         </div>
 
-        <h2 class="p-6 text-center font-bold text-3xl">
+        <h2 class="p-4 md:p-6 text-center font-bold text-3xl">
           Sign Up
         </h2>
         <button
@@ -180,11 +180,11 @@ async function handleSignUp() {
               label="Password"
               type="password"
               class="focus:border-secondary focus:ring-secondary"
-              :validation-status="userFormData.confirmPassword.length < 6 || userFormData.confirmPassword !== userFormData.password? 'error' : undefined"
+              :validation-status="userFormData.confirmPassword.length < 8 || userFormData.confirmPassword !== userFormData.password? 'error' : undefined"
               required
             >
               <template
-                v-if="userFormData.confirmPassword.length < 6 || userFormData.confirmPassword !== userFormData.password"
+                v-if="userFormData.confirmPassword.length < 8 || userFormData.confirmPassword !== userFormData.password"
                 #validationMessage
               >
                 請再次確認密碼

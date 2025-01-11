@@ -4,7 +4,6 @@ import { useDateFormat } from '@vueuse/core'
 const props = defineProps<{
   event: eventType
 }>()
-const formattedDate = useDateFormat(props.event.date, 'YYYY-MM-DD HH:mm')
 </script>
 
 <template>
@@ -19,7 +18,7 @@ const formattedDate = useDateFormat(props.event.date, 'YYYY-MM-DD HH:mm')
         {{ props.event.name }}
       </h3>
       <p class="text-white">
-        {{ formattedDate }}
+        {{ useDateFormat(props.event.sessions[0].sessionTime, 'YYYY-MM-DD HH:mm') }}
       </p>
     </div>
   </div>

@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import { useDateFormat } from '@vueuse/core'
+
 const prop = defineProps<{
   eventData: eventType
-  selectedArea?: {
-    name: string
-    value: string
-    date: string
-  }
+  selectedSession?: sessionType
 }>()
 </script>
 
@@ -21,14 +19,14 @@ const prop = defineProps<{
         {{ prop.eventData.name }}
       </div>
       <div class="flex space-x-4 w-full">
-        <span>{{ prop.selectedArea?.date }}</span>
+        <span>{{ useDateFormat(prop.selectedSession?.sessionTime, 'YYYY-MM-DD HH:mm') }}</span>
         <span class="flex">
           <Icon
             name="line-md:map-marker-alt-twotone-loop"
             size="24"
             class="mr-1"
           />
-          {{ eventData.location }}
+          {{ eventData.place.name }}
         </span>
       </div>
     </div>

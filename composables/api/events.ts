@@ -1,28 +1,98 @@
 export interface eventType {
-  id: number
+  id?: number
   name: string
-  orderNumber: string
-  seat: string
-  date: string
+  info: string
   coverUrl: string
   imgUrl: string
+  host: string
+  published: boolean
+  place: placeType
+  sessions: sessionType[]
+}
+export interface sessionType {
+  id?: number
+  name: string
+  sessionTime: Date // 近期演出
+  availableTime: Date // 最新開賣
+  publishTime: Date // 最新上架
+  eventId: number
   location: string
-  price: number
-  description: string
+  areas: areaType[]
+
+  status?: boolean // 購買狀態 前端定義
 }
 
-export interface showType {
+export interface areaType {
   id: number
   name: string
-  date: string
-  // url: string
-  location: string
-  status: boolean
+  price: number
+  sessionId: number
+  qty: number
+  displayOrder: number
+  tickets: ticketType[]
+  ticketsLeftCount: number
+}
+
+export interface ticketType {
+  id: number
+  areaId: number
+  rowNumber: number
+  seatNumber: number
+  ticketNumber: string
+  isSold: boolean
+  isTransfered: boolean
+  recieverId: string
+  orderId: number
+
+  isChoose: boolean // 選擇狀態 前端定義
+}
+
+export interface placeType {
+  id?: number
+  name: string
 }
 
 const Events = {
-  apiGetEvents(option?: HttpOption<eventType>) {
-    return useHttp.get<eventType>('/events', {}, {
+  // event : 取得活動列表
+  apiGetEvents(params: filterQueryType, option?: HttpOption<eventType[]>) {
+    return useHttp.get<eventType[]>('/events', params, {
+      watch: false,
+      lazy: true,
+      ...option,
+    })
+  },
+
+  // event : 取得單一活動
+  apiGetEventById(id: number, option?: HttpOption<eventType>) {
+    return useHttp.get<eventType>(`/events/${id}`, {}, {
+      watch: false,
+      lazy: true,
+      ...option,
+    })
+  },
+  // sessions : 取得場次資訊
+  apiGetSessionsByEventId(id: number, option?: HttpOption<sessionType[]>) {
+    return useHttp.get<sessionType[]>(`/sessions/byEvent/${id}`, {}, {
+      watch: false,
+      lazy: true,
+      ...option,
+    })
+  },
+
+  // session : 取得單一場次
+  apiGetSessionsById(id: number, option?: HttpOption<sessionType>) {
+    return useHttp.get<sessionType>(`/sessions/${id}`, {}, {
+      watch: false,
+      lazy: true,
+      ...option,
+    })
+  },
+
+  // session : 取得單一區域
+  apiGetAreaById(id: number, option?: HttpOption<areaType>) {
+    return useHttp.get<areaType>(`/areas/${id}`, {}, {
+      watch: false,
+      lazy: true,
       ...option,
     })
   },

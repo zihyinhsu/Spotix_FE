@@ -24,7 +24,7 @@ const props = defineProps<{
             :class="!route.path.includes('area')? 'text-primary' : 'cursor-pointer'"
             @click="$router.push(`/events/${props.eventData.id}`)"
           >
-            {{ props.eventData.name }}
+            {{ props.eventData?.name }}
           </span>
         </fwb-breadcrumb-item>
         <fwb-breadcrumb-item v-if="route.path.includes('area')">
