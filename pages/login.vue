@@ -50,7 +50,7 @@ async function handleLogin() {
 
 <template>
   <div class="grid grid-cols-12 md:h-screen">
-    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1 mt-[240px] md:mt-0">
+    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1 mt-[220px] md:mt-0">
       <div class="px-12 md:px-48">
         <div class="flex justify-center">
           <img

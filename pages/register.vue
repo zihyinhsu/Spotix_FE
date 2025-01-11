@@ -94,7 +94,7 @@ async function handleSignUp() {
 
 <template>
   <div class="grid grid-cols-12 md:h-screen">
-    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1 mt-[180px] md:mt-0">
+    <div class="col-span-12 md:col-span-6 flex flex-col justify-center order-2 md:order-1 mt-[140px] md:mt-0">
       <div class="px-12 md:px-48">
         <div class="flex justify-center">
           <img
@@ -126,7 +126,7 @@ async function handleSignUp() {
           class=" flex flex-col mb-4"
           @submit.prevent="handleSignUp"
         >
-          <section class="h-[430px] md:h-[400px] space-y-4 overflow-y-auto">
+          <section class="h-[380px] md:h-[400px] space-y-4 overflow-y-auto">
             <fwb-input
               v-model="userFormData.userName"
               placeholder="請輸入姓名"
