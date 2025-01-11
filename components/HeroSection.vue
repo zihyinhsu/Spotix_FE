@@ -1,25 +1,20 @@
 <script setup lang="ts">
 import { VueTypedJs } from 'vue3-typed-ts'
 
-// const router = useRouter()
+const { getEventsData } = useEventData()
+const currentMonth = new Date().getMonth() + 1
+const currentYear = new Date().getFullYear()
+const searchFilter = ref({
+  filterQuery: '',
+  year: currentYear,
+  month: currentMonth,
+  sortBy: 'sessionTime',
+  pageNumber: 1,
+  pageSize: 5,
+})
 
-const heroSectionImg = [
-  {
-    url: 'https://static.tixcraft.com/images/activity/25_day6_70552ba96e820fbd83666c05d1b73da8.jpg',
-  },
-  {
-    url: 'https://static.tixcraft.com/images/activity/25_yinyin_625ac6f479224a41ff6bd26413eb64f5.png',
-  },
-  {
-    url: 'https://static.tixcraft.com/images/activity/25_2ne1_1896743e66ee548aab124dee4a892cbb.jpg',
-  },
-  {
-    url: 'https://static.tixcraft.com/images/activity/25_casty_02b05d70dffe25a504383b508c04f0e0.png',
-  },
-  {
-    url: 'https://static.tixcraft.com/images/activity/25_mogwaitp_0a7c7df81f17191ae1e912e0cf6ff6e2.png',
-  },
-]
+const result = await getEventsData(searchFilter.value)
+const heroEvents = result.value?.data
 
 const breakpoints = {
   768: {
@@ -32,7 +27,7 @@ const breakpoints = {
 <template>
   <section class="w-full">
     <Carousel
-      v-if="heroSectionImg.length"
+      v-if="heroEvents?.length"
       ref="carousel"
       class="cursor-pointer"
       :breakpoints="breakpoints"
@@ -40,12 +35,12 @@ const breakpoints = {
       :autoplay="4000"
     >
       <Slide
-        v-for="(slide, idx) in heroSectionImg"
+        v-for="(slide, idx) in heroEvents"
         :key="idx"
       >
         <div class="carousel__item w-full">
           <img
-            :src="slide.url"
+            :src="slide.coverUrl"
             alt=""
             class="h-full w-full object-fit shadow-lg"
           >

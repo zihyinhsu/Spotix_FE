@@ -47,7 +47,8 @@ async function getEventsByFilter() {
 }
 
 watch(searchFilter, async (newFilter) => {
-  await getEventsData(newFilter)
+  const result = await getEventsData(newFilter)
+  if (result.value?.data) eventsData.value = result.value.data
 },
 {
   deep: true,

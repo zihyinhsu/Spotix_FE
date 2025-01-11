@@ -4,12 +4,11 @@ export const useEventData = () => {
   const eventsData = useState<eventType[]>('events', () => [])
   const currentEvent = useState<eventType>('currentEvent')
   const sessionsData = useState<sessionType[]>(() => [])
-  // const currentSession = useState<sessionType>('currentSession')
 
   // 取得活動列表
   async function getEventsData(filterQuery: filterQueryType) {
     const { data } = await Events.apiGetEvents(filterQuery)
-    if (data?.value?.data) eventsData.value = data?.value?.data
+    return data
   }
   // 取得單筆活動資訊
   async function getEventById(id: number) {
