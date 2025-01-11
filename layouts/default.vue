@@ -39,10 +39,11 @@ function handleInput() {
             <section class="absolute top-50 left-[32rem]">
               <form @submit.prevent>
                 <fwb-input
-                  v-model="searchFilter.filterQuery"
+                  v-model="searchQuery"
                   placeholder="搜尋活動"
                   size="md"
                   class="rounded-full md:min-w-[400px] border-gray-600 focus:ring-gray-600 focus:border-gray-800 desktop-only"
+                  @change="handleInput"
                 >
                   <template #suffix>
                     <svg
