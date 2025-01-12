@@ -102,7 +102,6 @@ onMounted(() => {
 <template>
   <div>
     <HeroSection />
-
     <section class="bg-secondary text-white pt-6">
       <div class="container py-6">
         <div

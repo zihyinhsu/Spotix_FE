@@ -2,20 +2,29 @@
 import { VueTypedJs } from 'vue3-typed-ts'
 
 const { getEventsData } = useEventData()
-const currentMonth = new Date().getMonth() + 1
 const currentYear = new Date().getFullYear()
-const searchFilter = ref({
-  filterQuery: '',
-  year: currentYear,
-  month: currentMonth,
-  sortBy: 'sessionTime',
-  pageNumber: 1,
-  pageSize: 5,
+const searchFilter = ref()
+
+const heroEvents = ref<eventType[]>([])
+
+onMounted(async () => {
+  searchFilter.value = {
+    filterQuery: '',
+    year: currentYear,
+    month: null,
+    sortBy: 'publishTime',
+    pageNumber: 1,
+    pageSize: 5,
+  }
 })
-
-const result = await getEventsData(searchFilter.value)
-const heroEvents = result.value?.data
-
+watch(searchFilter, async (newFilter) => {
+  const result = await getEventsData(newFilter)
+  if (result.value?.data) heroEvents.value = result.value.data
+},
+{
+  deep: true,
+},
+)
 const breakpoints = {
   768: {
     itemsToShow: 1.8,
@@ -37,6 +46,7 @@ const breakpoints = {
       <Slide
         v-for="(slide, idx) in heroEvents"
         :key="idx"
+        @click="$router.push('/events/' + slide.id)"
       >
         <div class="carousel__item w-full">
           <img
