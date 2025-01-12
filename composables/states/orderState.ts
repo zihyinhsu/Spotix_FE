@@ -26,7 +26,6 @@ export interface orderType {
   address: string
   totalPrice: number
   bookIds: number[]
-  books?: bookType[]
   payTime: string
   notes: string
 }

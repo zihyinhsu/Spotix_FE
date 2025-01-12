@@ -29,13 +29,19 @@ const purchaseStep = ref([
   },
   {
     label: '完成訂購',
-    value: 'finishPurchase',
+    value: 'orderResult',
   },
 ])
 
 const activeStep = ref('chooseArea')
 watch(activeStep, () => {
   scrollToTop()
+})
+
+onMounted(() => {
+  if (route.path === '/events/area/orderResult') {
+    activeStep.value = 'orderResult'
+  }
 })
 
 const sessionOptions = computed(() => {
@@ -610,6 +616,23 @@ const { userData } = useUser()
               下一步
             </fwb-button>
           </section>
+        </section>
+      </template>
+      <template v-else-if="activeStep === 'orderResult'">
+        <section class="min-h-[calc(100vh-450px)] md:min-h-[calc(100vh-314px)]">
+          <div class="flex items-center justify-center min-h-[calc(100vh-450px)] md:min-h-[calc(100vh-314px)] bg-gray-100">
+            <div class="text-center">
+              <div class="text-[40px] md:text-2xl font-bold text-primary mb-6">
+                結帳成功，請回到訂單頁面確認訂單!
+              </div>
+              <fwb-button
+                class="text-lg bg-primary text-white hover:bg-primary focus:ring-opacity-0"
+                @click="router.push('/memberCenter?type=orderManagement')"
+              >
+                前往訂單
+              </fwb-button>
+            </div>
+          </div>
         </section>
       </template>
     </section>
