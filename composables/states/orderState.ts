@@ -1,42 +1,33 @@
 import Order from '../api/order'
 
 export interface encryptOrderType {
-  TimeStamp?: Date
-  MerchantOrderNo?: number
-  Amt?: number
-  email?: string
-  TradeInfo?: string
-  name?: string
-  cellphone?: string
-  address?: string
-  notes: string
-
-  userId: string
-  totalPrice: number
-  bookIds: number[]
-  ItemDesc: string
-  payTime?: string
+  timeStamp: number
+  amt: number
+  itemDesc: string
+  email: string
+  tradeInfo: string
+  tradeSha: string
+  merchantID: string
+  merchantOrderNo: number
+  version: string
+  notifyUrl: string
+  returnUrl: string
 }
 export interface orderType {
-  id: number
+  id?: number
+  createdTime?: Date
+  total: number
   userId: string
-  email: string
-  name: string
-  cellphone: string
-  address: string
-  totalPrice: number
-  bookIds: number[]
-  payTime: string
-  notes: string
+  orderNumber: string
+  tickets: ticketType[]
 }
 export const useOrderData = () => {
-  const encryptOrderData = useState<encryptOrderType | null>('encryptOrder', () => null)
   const orderData = useState<orderType[]>('orders', () => [])
 
   /** 加密訂單 */
   async function EncryptOrder(order) {
     const { data } = await Order.apiEncryptData(order)
-    if (data?.value?.data) encryptOrderData.value = data?.value?.data
+    return data
   }
 
   async function getorder() {
@@ -44,5 +35,6 @@ export const useOrderData = () => {
     if (data?.value?.data) orderData.value = data?.value?.data
   }
 
-  return { encryptOrderData, orderData, EncryptOrder, getorder }
+  return {
+    orderData, EncryptOrder, getorder }
 }

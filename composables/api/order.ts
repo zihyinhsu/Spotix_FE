@@ -1,13 +1,13 @@
 const Order = {
   /** 加密訂單 */
-  apiEncryptData(params: encryptOrderType, option?: HttpOption<encryptOrderType>) {
-    return useHttp.post<encryptOrderType>('/order/encrypt', params, {
+  apiEncryptData(params, option?: HttpOption<encryptOrderType>) {
+    return useHttp.post<encryptOrderType>('/orders/encrypt', params, {
       ...option,
     })
   },
-  /** 新增訂單 */
+  /** 取得訂單 */
   apiGetData(option?: HttpOption<orderType[]>) {
-    return useHttp.get<orderType[]>('/order', {}, {
+    return useHttp.get<orderType[]>('/orders', {}, {
       ...option,
     })
   },

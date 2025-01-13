@@ -43,8 +43,11 @@ export interface ticketType {
   isTransfered: boolean
   recieverId: string
   orderId: number
-
+  sessionName?: string
   isChoose: boolean // 選擇狀態 前端定義
+  qrcode: string // 前端定義
+
+  price?: number // 前端定義
 }
 
 export interface placeType {

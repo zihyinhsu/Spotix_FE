@@ -173,23 +173,23 @@ watch(choosedSeatNum, () => {
 // 驗證碼
 const CaptchaInputValue = ref()
 
-const data = ref({
+const captchaCode = ref({
   captchaCode: null,
   isValid: false,
 })
 
 function getCaptchaCode(value) {
-  data.value.captchaCode = value
+  captchaCode.value.captchaCode = value
 }
 
 function checkValidCaptcha(value) {
-  data.value.isValid = value
+  captchaCode.value.isValid = value
 }
 
 const isLoading = useLoading()
 
 function handleSendCaptcha() {
-  if (!data.value.isValid) {
+  if (!captchaCode.value.isValid) {
     notify.value = {
       visible: true,
       status: 'danger',
@@ -254,10 +254,60 @@ function deleteTicket(index) {
 }
 
 // 送出訂單
-function handleSendOrder() {
+
+const { EncryptOrder } = useOrderData()
+
+async function handleSendOrder() {
   isLoading.value = true
-  // activeStep.value = 'payment'
-  router.push('/memberCenter?type=orderManagement')
+  const encryptOrderParams = {
+    total: selectedData.value.reduce((acc, item) => acc + item.price, 0),
+    ItemDesc: currentEvent.value?.name,
+    createdTime: new Date().toISOString(),
+    ticketIds: choosedTicketsArr.value.map(ticket => ticket.id).join(','),
+  }
+
+  const result = await EncryptOrder(encryptOrderParams)
+  if (result?.value?.data?.[0]) {
+    const encryptOrderData = result?.value?.data?.[0]
+    await sendOrderTonewebPay(encryptOrderData)
+  }
+}
+
+async function sendOrderTonewebPay(encryptOrderData) {
+  const form = document.createElement('form')
+  form.method = 'POST'
+  form.action = 'https://ccore.newebpay.com/MPG/mpg_gateway'
+
+  // 設置表單的 enctype 屬性
+  form.enctype = 'application/x-www-form-urlencoded'
+
+  // 將 orderData 轉換為 URLSearchParams 並添加到表單中
+  const { merchantID, tradeSha, tradeInfo, timeStamp, version, notifyUrl, returnUrl, merchantOrderNo, amt, itemDesc, email } = encryptOrderData
+  const data = {
+    MerchantID: merchantID,
+    TradeSha: tradeSha,
+    TradeInfo: tradeInfo,
+    TimeStamp: timeStamp,
+    Version: version,
+    NotifyUrl: notifyUrl,
+    ReturnUrl: returnUrl,
+    MerchantOrderNo: merchantOrderNo,
+    Amt: amt,
+    ItemDesc: itemDesc,
+    Email: email,
+    OrderNumber: merchantOrderNo,
+  }
+  const params = new URLSearchParams(data)
+  for (const [key, value] of params) {
+    const input = document.createElement('input')
+    input.type = 'hidden'
+    input.name = key
+    input.value = value
+    form.appendChild(input)
+  }
+
+  document.body.appendChild(form)
+  form.submit()
 }
 
 // 購票會員聯絡資訊

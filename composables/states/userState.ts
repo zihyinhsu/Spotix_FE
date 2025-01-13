@@ -1,4 +1,5 @@
 import { useNotify } from './notifyState'
+import type { orderType } from './orderState'
 import { useCookie } from '#app'
 import type { LoginData } from '~/pages/login.vue'
 import type { UserFormData } from '~/pages/register.vue'
@@ -14,7 +15,7 @@ export interface User {
   avatarUrl?: string
   lineId?: string
   roles?: string[]
-  orders?: string[]
+  orders?: orderType[]
   jwtToken?: string
 };
 export const useUser = () => {
