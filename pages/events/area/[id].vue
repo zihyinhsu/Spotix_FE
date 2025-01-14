@@ -703,7 +703,7 @@ if (!userData.value) {
     >
       <template #header>
         <div class="flex flex-col justify-center items-center space-y-2 w-full text-sm">
-          <span class="text-lg">{{ `${tempAreaData.name} ${tempAreaData.price}` }}</span>
+          <span class="text-lg">{{ `${tempAreaData.name}` }}</span>
 
           <div class="flex space-x-4">
             <span class="flex items-center">

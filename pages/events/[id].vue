@@ -60,16 +60,16 @@ const activeTab = ref('info')
           class="p-4 shadow-xl md:hidden mb-8"
         >
           <div
-            v-for="(item, idx) in tableConfig"
+            v-for="(config, idx) in tableConfig"
             :key="idx"
             class="flex justify-between"
           >
             <div class="w-[100px] p-2 font-bold">
-              {{ item.label }}
+              {{ config.label }}
             </div>
             <div class="text-right w-[200px] p-2">
               <fwb-button
-                v-if="item.value === 'status'"
+                v-if="config.value === 'status'"
                 size="sm"
                 primary
                 :class="session.status ? 'bg-primary hover:bg-primary focus:ring-opacity-0 transition duration-500 ease-in-out' : 'text-primary bg-transparent p-0'"
@@ -81,11 +81,12 @@ const activeTab = ref('info')
               <template
                 v-else
               >
-                <span v-if="item.value === 'place'">{{ currentEvent?.place.name }}</span>
+                <span v-if="config.value === 'place'">{{ currentEvent?.place.name }}</span>
+                <span v-if="config.value === 'sessionTime'"> {{ useDateFormat(session.sessionTime, 'YYYY-MM-DD HH:mm') }} </span>
                 <span
                   v-else
                   class="block"
-                >{{ session[item.value] }}</span>
+                >{{ session[config.value] }}</span>
               </template>
             </div>
           </div>

@@ -42,17 +42,18 @@ const breakpoints = {
       :breakpoints="breakpoints"
       :wrap-around="true"
       :autoplay="4000"
+      :prevent-excessive-dragging="true"
     >
       <Slide
         v-for="(slide, idx) in heroEvents"
         :key="idx"
         @click="$router.push('/events/' + slide.id)"
       >
-        <div class="carousel__item w-full">
+        <div class="carousel__item w-full h-[187px] md:h-[300px] overflow-hidden">
           <img
             :src="slide.coverUrl"
-            alt=""
-            class="h-full w-full object-fit shadow-lg"
+            :alt="slide.name"
+            class="object-fit shadow-lg"
           >
         </div>
       </Slide>
@@ -93,7 +94,7 @@ const breakpoints = {
   padding: 5px;
   height:200px;
   @media (min-width: 768px) {
-    height:400px;
+    height:350px;
   }
 }
 
