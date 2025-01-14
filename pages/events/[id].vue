@@ -151,6 +151,14 @@ const activeTab = ref('info')
           title="節目資訊"
         >
           <div v-html="currentEvent?.info" />
+
+          <div class="mt-8 md:max-w-[50%] mx-auto">
+            <img
+              :src="currentEvent?.imgUrl"
+              :alt="currentEvent?.name"
+              class="object-fit sticky top-40"
+            >
+          </div>
         </fwb-tab>
         <fwb-tab
           name="warning"
