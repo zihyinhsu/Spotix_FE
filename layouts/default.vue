@@ -10,7 +10,14 @@ const route = useRoute()
 const searchQuery = ref('')
 function handleInput() {
   searchFilter.value.filterQuery = searchQuery.value
+  searchFilter.value.month = null
 }
+
+watch(() => searchFilter.value.filterQuery, (newVal) => {
+  if (newVal === '') {
+    searchQuery.value = ''
+  }
+})
 </script>
 
 <template>

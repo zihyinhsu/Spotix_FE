@@ -5,6 +5,8 @@ const currentYear = new Date().getFullYear()
 const year = ref(currentYear)
 
 async function chooseYear(type: string) {
+  searchFilter.value.filterQuery = ''
+
   if (scrollContainer.value) {
     scrollContainer.value.scrollTo({
       left: 0,
@@ -47,8 +49,17 @@ async function getEventsByFilter() {
 }
 
 watch(searchFilter, async (newFilter) => {
+  if (searchFilter.value.filterQuery === '' && activedMonth.value === '') {
+    activedMonth.value = Months[currentMonth]
+    searchFilter.value.month = Months.findIndex(i => i === activedMonth.value) + 1
+  }
   const result = await getEventsData(newFilter)
-  if (result.value?.data) eventsData.value = result.value.data
+  if (result.value?.data) {
+    eventsData.value = result.value.data
+    if (searchFilter.value.filterQuery !== '') {
+      activedMonth.value = ''
+    }
+  }
 },
 {
   deep: true,
@@ -59,10 +70,12 @@ onMounted(() => {
 })
 
 async function getEventsByMonth(month: string) {
+  searchFilter.value.filterQuery = ''
   activedMonth.value = month
   getEventsByFilter()
 }
 async function getEventsBySort(sort: string) {
+  searchFilter.value.filterQuery = ''
   activeSort.value = sort
   getEventsByFilter()
 }
@@ -150,7 +163,7 @@ onMounted(() => {
               v-for="(month, i) in Months"
               :key="month"
               class="text-center text-lg md:text-2xl font-mono p-4 w-full cursor-pointer hover:-translate-y-1 transition-ease rounded-md"
-              :class="{ ' text-white -translate-y-1 bg-primary': activedMonth === month, 'bg-white': activedMonth !== month }"
+              :class="{ ' text-white -translate-y-1 bg-primary': activedMonth === month, 'bg-white': activedMonth !== month, 'bg-gray': activedMonth === '' }"
               @click="getEventsByMonth(month)"
             >
               <div>
