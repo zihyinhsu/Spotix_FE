@@ -312,6 +312,14 @@ async function sendOrderTonewebPay(encryptOrderData) {
 
 // 購票會員聯絡資訊
 const { userData } = useUser()
+if (!userData.value) {
+  await navigateTo('/login')
+  notify.value = {
+    visible: true,
+    status: 'danger',
+    message: '請先登入會員',
+  }
+}
 </script>
 
 <template>
