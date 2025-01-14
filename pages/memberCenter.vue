@@ -505,6 +505,11 @@ function openModel(type: string, tickets: ticketType[]) {
                   </div>
                 </div>
               </div>
+              <template v-if="ticketsData.length === 0">
+                <div class="text-center text-lg font-bold text-primary py-6">
+                  無資料
+                </div>
+              </template>
             </div>
           </template>
           <template v-else-if="tab.value === 'orderManagement'">
@@ -608,6 +613,11 @@ function openModel(type: string, tickets: ticketType[]) {
                   </div>
                 </div>
               </div>
+              <template v-if="userOrdersData.length === 0">
+                <div class="text-center text-lg font-bold text-primary py-6">
+                  無資料
+                </div>
+              </template>
             </div>
           </template>
         </fwb-tab>
