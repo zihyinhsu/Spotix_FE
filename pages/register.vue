@@ -22,7 +22,7 @@ export interface UserFormData extends LoginData {
 
 const userFormData = ref<UserFormData>(
   {
-    userName: '朴再興',
+    userName: 'Eaj',
     email: 'eaj@example.com',
     password: 'eajpark0915',
     confirmPassword: 'eajpark0915',
