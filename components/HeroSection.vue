@@ -48,7 +48,7 @@ const breakpoints = {
         :key="idx"
         @click="$router.push('/events/' + slide.id)"
       >
-        <div class="carousel__item w-full max-h-[187px] md:max-h-[253px]">
+        <div class="carousel__item w-full">
           <img
             :src="slide.coverUrl"
             alt=""

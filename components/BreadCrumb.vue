@@ -18,7 +18,7 @@ const props = defineProps<{
             首頁
           </span>
         </fwb-breadcrumb-item>
-        <fwb-breadcrumb-item>
+        <fwb-breadcrumb-item v-if="props.eventData">
           <span
             class="text-xs md:text-sm"
             :class="!route.path.includes('area')? 'text-primary' : 'cursor-pointer'"
