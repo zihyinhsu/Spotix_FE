@@ -11,6 +11,7 @@ const searchQuery = ref('')
 function handleInput() {
   searchFilter.value.filterQuery = searchQuery.value
   searchFilter.value.month = null
+  navigateTo('/')
 }
 
 watch(() => searchFilter.value.filterQuery, (newVal) => {
