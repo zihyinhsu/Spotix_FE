@@ -547,7 +547,7 @@ async function sendOrderTonewebPay(encryptOrderData) {
             </div>
             <div class="p-4">
               <span class="mr-4">聯絡電話</span>
-              <span>{{ userData?.phoneNumber }}</span>
+              <span>{{ userData?.phoneNumber|| '0982256547' }}</span>
             </div>
           </section>
 
