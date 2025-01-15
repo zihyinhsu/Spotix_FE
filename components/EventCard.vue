@@ -9,7 +9,7 @@ const props = defineProps<{
 <template>
   <div class="w-full h-full rounded-md overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-ease cursor-pointer hover-primary flex flex-col">
     <img
-      class="object-fit w-full min-h-[160px] md:min-h-[80px]"
+      class="object-cover w-full max-h-[160px] md:max-h-[80px]"
       :src="props.event.coverUrl"
       alt="event"
     >
