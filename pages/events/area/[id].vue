@@ -38,9 +38,21 @@ watch(activeStep, () => {
   scrollToTop()
 })
 
+const { userData } = useUser()
 onMounted(() => {
   if (route.path === '/events/area/orderResult') {
     activeStep.value = 'orderResult'
+  }
+  else {
+    // 購票會員聯絡資訊
+    if (!userData.value) {
+      navigateTo('/login')
+      notify.value = {
+        visible: true,
+        status: 'danger',
+        message: '請先登入會員',
+      }
+    }
   }
 })
 
@@ -308,17 +320,6 @@ async function sendOrderTonewebPay(encryptOrderData) {
 
   document.body.appendChild(form)
   form.submit()
-}
-
-// 購票會員聯絡資訊
-const { userData } = useUser()
-if (!userData.value) {
-  await navigateTo('/login')
-  notify.value = {
-    visible: true,
-    status: 'danger',
-    message: '請先登入會員',
-  }
 }
 </script>
 
