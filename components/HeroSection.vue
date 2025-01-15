@@ -38,7 +38,7 @@ const breakpoints = {
     <Carousel
       v-if="heroEvents?.length"
       ref="carousel"
-      class="cursor-pointer"
+      class="cursor-pointer mt-4"
       :breakpoints="breakpoints"
       :wrap-around="true"
       :autoplay="4000"
@@ -49,11 +49,11 @@ const breakpoints = {
         :key="idx"
         @click="$router.push('/events/' + slide.id)"
       >
-        <div class="carousel__item w-full h-[187px] md:h-[300px] overflow-hidden">
+        <div class="carousel__item w-full">
           <img
             :src="slide.coverUrl"
             :alt="slide.name"
-            class="object-fit shadow-lg"
+            class="object-cover shadow-lg h-full"
           >
         </div>
       </Slide>
@@ -93,6 +93,7 @@ const breakpoints = {
 .carousel__slide {
   padding: 5px;
   height:200px;
+  overflow:hidden;
   @media (min-width: 768px) {
     height:350px;
   }
