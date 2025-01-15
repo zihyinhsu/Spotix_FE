@@ -40,6 +40,7 @@ watch(activeStep, () => {
 
 const { userData } = useUser()
 onMounted(() => {
+  console.log('userData', userData.value)
   if (route.path === '/events/area/orderResult') {
     activeStep.value = 'orderResult'
   }
