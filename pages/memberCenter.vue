@@ -124,7 +124,7 @@ async function handleFileChange(event: Event) {
   }
 }
 
-const { getAreaById } = useEventData()
+// const { getAreaById } = useEventData()
 
 const userOrdersData = ref<orderType[]>([])
 const ticketsData = ref<ticketType[]>([])
@@ -134,13 +134,13 @@ onMounted(async () => {
 
     ticketsData.value = userOrdersData.value.map(order => order.tickets).flat()
     console.log('userOrdersData.value', userOrdersData.value, ticketsData.value)
-    nextTick(async () => {
-      const result = await getAreaById(ticketsData.value[0].areaId)
-      ticketsData.value.forEach((ticket) => {
-        ticket.price = result.value.data?.[0].price
+
+    userOrdersData.value.forEach(async (order) => {
+      order.tickets.forEach(async (ticket) => {
+        ticket.price = order.total / order.tickets.length
       })
-      console.log('result', result.value.data?.[0].price)
     })
+    // const result = await getAreaById(ticket.areaId)
   }
 })
 
