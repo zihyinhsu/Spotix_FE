@@ -12,7 +12,7 @@ onMounted(async () => {
     filterQuery: '',
     year: currentYear,
     month: null,
-    sortBy: 'publishTime',
+    sortBy: 'sessionTime',
     pageNumber: 1,
     pageSize: 5,
   }
