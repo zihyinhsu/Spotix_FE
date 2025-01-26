@@ -71,7 +71,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      apiBase: 'https://d945-114-34-72-78.ngrok-free.app/',
+      apiBase: 'https://spotix-be-h7a6c3drcshmafcb.japanwest-01.azurewebsites.net/',
     },
     newebpay: {
       MerchantID: process.env.MerchantID,
